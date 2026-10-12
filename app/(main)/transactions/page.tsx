@@ -153,9 +153,9 @@ export default function TransactionsPage() {
     <div className="flex flex-col flex-1 pb-10">
       <Header title="Riwayat Transaksi" showGreeting={false} />
 
-      <div className="px-5 space-y-3 mt-2">
+      <div className="px-5 space-y-1 mt-2">
         {/* Search & Type Filter stays visible while scrolling the list */}
-        <div className="space-y-2 sticky top-16 z-20 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md py-2 -my-2">
+        <div className="sticky top-16 z-20 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md pt-2 pb-2 border-b border-zinc-200/70 dark:border-zinc-800/70 -mx-5 px-5 space-y-2">
           <div className="relative">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
