@@ -21,30 +21,34 @@ async function assertAuthenticated() {
 export async function getAccounts(includeArchived = false) {
   await assertAuthenticated();
 
-  const accounts = await db.account.findMany({
-    where: includeArchived ? undefined : { isArchived: false },
-    include: {
-      transactions: {
-        select: {
-          type: true,
-          amount: true,
+  const [accounts, sums] = await Promise.all([
+    db.account.findMany({
+      where: includeArchived ? undefined : { isArchived: false },
+      include: {
+        _count: {
+          select: { transactions: true },
         },
       },
-      _count: {
-        select: { transactions: true },
-      },
-    },
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-  });
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+    }),
+    db.transaction.groupBy({
+      by: ["accountId", "type"],
+      _sum: { amount: true },
+    }),
+  ]);
+
+  const sumsByAccount = new Map<string, { type: "INCOME" | "EXPENSE"; amount: number }[]>();
+  for (const row of sums) {
+    const list = sumsByAccount.get(row.accountId) ?? [];
+    list.push({ type: row.type, amount: fromBigIntToNumber(row._sum.amount) });
+    sumsByAccount.set(row.accountId, list);
+  }
 
   return accounts.map((acc) => {
     const initialBalanceNum = fromBigIntToNumber(acc.initialBalance);
     const balance = calculateAccountBalance(
       initialBalanceNum,
-      acc.transactions.map((t) => ({
-        type: t.type,
-        amount: fromBigIntToNumber(t.amount),
-      }))
+      sumsByAccount.get(acc.id) ?? []
     );
 
     return {

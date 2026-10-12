@@ -7,12 +7,8 @@ import {
   getMonthRangeWIB,
   getCurrentYearMonthWIB,
 } from "@/lib/date";
-import {
-  calculateAccountBalance,
-  calculateTotalBalance,
-  calculateMonthlySummary,
-  calculateBudgetUsage,
-} from "@/lib/calc";
+import { calculateMonthlySummary, calculateBudgetUsage } from "@/lib/calc";
+import { getActiveAccountsWithBalance } from "@/lib/balances";
 import { TransactionType } from "@prisma/client";
 
 async function assertAuthenticated() {
@@ -31,48 +27,9 @@ export async function getDashboardData(yearParam?: number, monthParam?: number) 
 
   const { start: monthStart, end: monthEnd } = getMonthRangeWIB(year, month);
 
-  // 1. Fetch active accounts
-  const rawAccounts = await db.account.findMany({
-    where: { isArchived: false },
-    include: {
-      transactions: {
-        select: { type: true, amount: true },
-      },
-    },
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-  });
-
-  const accounts = rawAccounts.map((acc) => {
-    const initialNum = fromBigIntToNumber(acc.initialBalance);
-    const balance = calculateAccountBalance(
-      initialNum,
-      acc.transactions.map((t) => ({
-        type: t.type,
-        amount: fromBigIntToNumber(t.amount),
-      }))
-    );
-
-    return {
-      id: acc.id,
-      name: acc.name,
-      type: acc.type,
-      icon: acc.icon,
-      initialBalance: initialNum,
-      balance,
-      isArchived: acc.isArchived,
-    };
-  });
-
-  const totalBalance = calculateTotalBalance(
-    accounts.map((a) => ({
-      initialBalance: a.initialBalance,
-      isArchived: a.isArchived,
-      transactions: [],
-    })).map((a, idx) => ({
-      initialBalance: accounts[idx].balance,
-      isArchived: false,
-    }))
-  );
+  // 1. Active accounts with balances (computed in DB)
+  const accounts = await getActiveAccountsWithBalance();
+  const totalBalance = accounts.reduce((sum, a) => sum + a.balance, 0);
 
   // 2. Fetch monthly transactions for summary
   const monthlyTrx = await db.transaction.findMany({

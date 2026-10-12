@@ -1,6 +1,5 @@
 import db from "@/lib/db";
-import { fromBigIntToNumber } from "@/lib/money";
-import { calculateAccountBalance } from "@/lib/calc";
+import { getActiveAccountsWithBalance } from "@/lib/balances";
 import { QuickAddModal } from "./QuickAddModal";
 import { QuickAddForm } from "@/features/transactions/QuickAddForm";
 
@@ -12,31 +11,28 @@ export async function QuickAddModalWrapper() {
   let defaultIncomeCategoryId: string | undefined;
 
   try {
-    const rawAccounts = await db.account.findMany({
-      where: { isArchived: false },
-      include: {
-        transactions: { select: { type: true, amount: true } },
-      },
-      orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-    });
+    const [accountRows, rawCategories, settings] = await Promise.all([
+      getActiveAccountsWithBalance(),
+      db.category.findMany({
+        where: { isArchived: false },
+        orderBy: [{ isDefault: "desc" }, { name: "asc" }],
+      }),
+      // Smart defaults from Settings
+      db.setting.findMany({
+        where: {
+          key: {
+            in: ["lastUsedAccountId", "lastUsedCategory.EXPENSE", "lastUsedCategory.INCOME"],
+          },
+        },
+      }),
+    ]);
 
-    accounts = rawAccounts.map((acc) => ({
+    accounts = accountRows.map((acc) => ({
       id: acc.id,
       name: acc.name,
       icon: acc.icon,
-      balance: calculateAccountBalance(
-        fromBigIntToNumber(acc.initialBalance),
-        acc.transactions.map((t) => ({
-          type: t.type,
-          amount: fromBigIntToNumber(t.amount),
-        }))
-      ),
+      balance: acc.balance,
     }));
-
-    const rawCategories = await db.category.findMany({
-      where: { isArchived: false },
-      orderBy: [{ isDefault: "desc" }, { name: "asc" }],
-    });
 
     categories = rawCategories.map((c) => ({
       id: c.id,
@@ -45,15 +41,6 @@ export async function QuickAddModalWrapper() {
       icon: c.icon,
       color: c.color,
     }));
-
-    // Read smart defaults from Settings
-    const settings = await db.setting.findMany({
-      where: {
-        key: {
-          in: ["lastUsedAccountId", "lastUsedCategory.EXPENSE", "lastUsedCategory.INCOME"],
-        },
-      },
-    });
 
     for (const s of settings) {
       if (s.key === "lastUsedAccountId") defaultAccountId = s.value;
