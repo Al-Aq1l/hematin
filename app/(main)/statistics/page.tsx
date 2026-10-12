@@ -1,4 +1,3 @@
-import { Header } from "@/components/Header";
 import { getStatisticsData } from "@/features/statistics/actions";
 import { StatisticsClient } from "@/features/statistics/StatisticsClient";
 
@@ -18,11 +17,7 @@ export default async function StatisticsPage({ searchParams }: StatisticsPagePro
 
   return (
     <div className="flex flex-col flex-1 pb-6">
-      <Header title="Statistik & Analisis" showGreeting={false} />
-
-      <div className="px-5 mt-2">
-        <StatisticsClient data={data} />
-      </div>
+      <StatisticsClient data={data} />
     </div>
   );
 }

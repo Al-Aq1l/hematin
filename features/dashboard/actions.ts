@@ -48,6 +48,7 @@ export async function getDashboardData(yearParam?: number, monthParam?: number) 
         select: {
           id: true,
           name: true,
+          color: true,
         },
       },
     },
@@ -59,21 +60,6 @@ export async function getDashboardData(yearParam?: number, monthParam?: number) 
       amount: fromBigIntToNumber(t.amount),
     }))
   );
-
-  // Expense map per category
-  const expenseMap = new Map<string, { id: string; name: string; amount: number }>();
-  for (const t of monthlyTrx) {
-    if (t.type === TransactionType.EXPENSE) {
-      const amt = fromBigIntToNumber(t.amount);
-      const existing = expenseMap.get(t.categoryId) || {
-        id: t.categoryId,
-        name: t.category.name,
-        amount: 0,
-      };
-      existing.amount += amt;
-      expenseMap.set(t.categoryId, existing);
-    }
-  }
 
   // 3. Fetch monthly budgets
   const rawBudgets = await db.budget.findMany({

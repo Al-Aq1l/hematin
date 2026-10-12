@@ -7,14 +7,14 @@ import { DonutChart } from "@/components/charts/DonutChart";
 import { BarChart6Months } from "@/components/charts/BarChart6Months";
 import { StatisticsData } from "./actions";
 import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar as CalendarIcon,
+  BarChart3,
   TrendingUp,
   TrendingDown,
   PiggyBank,
   Percent,
-  ChevronLeft,
-  ChevronRight,
-  BarChart3,
-  PieChart as PieChartIcon,
 } from "lucide-react";
 
 interface StatisticsClientProps {
@@ -35,191 +35,239 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
   } = data;
 
   const [activeTab, setActiveTab] = useState<"EXPENSE" | "INCOME">("EXPENSE");
+  const [timeFilter, setTimeFilter] = useState<"WEEK" | "MONTH" | "YEAR">("MONTH");
 
   const activeBreakdown =
     activeTab === "EXPENSE" ? expenseBreakdown : incomeBreakdown;
   const activeTotal =
     activeTab === "EXPENSE" ? summary.expense : summary.income;
 
+  const monthFirstWord = (monthLabel.split(" ")[0] || "MONTH").toUpperCase();
+
   return (
-    <div className="space-y-5">
-      {/* Month Navigator */}
-      <div className="flex items-center justify-between p-2 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-800">
+    <div className="space-y-6">
+      {/* Top Header: < HOME on left, Calendar Month Year on right */}
+      <div className="flex items-center justify-between px-5 pt-3 pb-2 sticky top-0 z-30 bg-zinc-50/90 dark:bg-[#0d1015]/90 backdrop-blur-md">
         <Link
-          href={`/statistics?year=${prevYM.year}&month=${prevYM.month}`}
-          className="p-2 rounded-xl hover:bg-zinc-200/60 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors"
-          title="Bulan sebelumnya"
+          href="/"
+          className="flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
+          <span>HOME</span>
         </Link>
 
-        <div className="text-center">
-          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-            {monthLabel}
-          </span>
-        </div>
-
-        <Link
-          href={`/statistics?year=${nextYM.year}&month=${nextYM.month}`}
-          className="p-2 rounded-xl hover:bg-zinc-200/60 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors"
-          title="Bulan berikutnya"
-        >
-          <ChevronRight className="w-4 h-4" />
-        </Link>
-      </div>
-
-      {/* 4 Summary Cards */}
-      <div className="grid grid-cols-2 gap-2.5">
-        {/* Income */}
-        <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 mb-1">
-            <TrendingUp className="w-4 h-4" />
-            <span>Pemasukan</span>
-          </div>
-          <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100 truncate">
-            {formatRupiah(summary.income)}
-          </div>
-        </div>
-
-        {/* Expense */}
-        <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-medium text-rose-600 dark:text-rose-400 mb-1">
-            <TrendingDown className="w-4 h-4" />
-            <span>Pengeluaran</span>
-          </div>
-          <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100 truncate">
-            {formatRupiah(summary.expense)}
-          </div>
-        </div>
-
-        {/* Saving (Selisih) */}
-        <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 mb-1">
-            <PiggyBank className="w-4 h-4" />
-            <span>Selisih (Saving)</span>
-          </div>
-          <div
-            className={`text-sm font-extrabold font-mono truncate ${
-              summary.saving < 0
-                ? "text-rose-600 dark:text-rose-400"
-                : "text-zinc-900 dark:text-zinc-100"
-            }`}
+        {/* Month Navigator with Calendar Icon */}
+        <div className="flex items-center gap-1.5 bg-zinc-100 dark:bg-[#161a22] px-2.5 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20">
+          <Link
+            href={`/statistics?year=${prevYM.year}&month=${prevYM.month}`}
+            className="p-1 rounded-full text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+            title="Bulan Sebelumnya"
           >
-            {formatRupiah(summary.saving)}
-          </div>
-        </div>
+            <ChevronLeft className="w-3.5 h-3.5" />
+          </Link>
 
-        {/* Saving Rate */}
-        <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-medium text-purple-600 dark:text-purple-400 mb-1">
-            <Percent className="w-4 h-4" />
-            <span>Saving Rate</span>
+          <div className="flex items-center gap-1.5 px-1 text-[11px] font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+            <CalendarIcon className="w-3.5 h-3.5 text-zinc-400" />
+            <span>{monthLabel.toUpperCase()}</span>
           </div>
-          <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100">
-            {summary.savingRate !== null ? `${summary.savingRate}%` : "—"}
-          </div>
+
+          <Link
+            href={`/statistics?year=${nextYM.year}&month=${nextYM.month}`}
+            className="p-1 rounded-full text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+            title="Bulan Berikutnya"
+          >
+            <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
 
-      {/* Donut Chart & Category Breakdown Section */}
-      <div className="p-4 rounded-3xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-800 space-y-4">
-        {/* Header & Toggle (FR-STAT-6) */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-800 dark:text-zinc-200">
-            <PieChartIcon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Komposisi Kategori</span>
-          </div>
+      <div className="px-5 space-y-6">
+        {/* Large Segmented Donut Ring */}
+        <div className="flex flex-col items-center justify-center">
+          <DonutChart
+            items={activeBreakdown}
+            total={activeTotal}
+            centerSubtitle={`SPENT THIS ${monthFirstWord}`}
+            emptyLabel={`Belum ada ${
+              activeTab === "EXPENSE" ? "pengeluaran" : "pemasukan"
+            }`}
+          />
 
-          {/* Toggle Button */}
-          <div className="flex bg-zinc-200/70 dark:bg-zinc-700/60 p-0.5 rounded-xl text-[11px] font-semibold">
+          {/* Filter Pills: WEEK | MONTH | YEAR */}
+          <div className="flex items-center justify-center gap-6 mt-3 text-xs uppercase tracking-widest font-semibold">
             <button
               type="button"
-              onClick={() => setActiveTab("EXPENSE")}
-              className={`px-2.5 py-1 rounded-lg transition-all ${
-                activeTab === "EXPENSE"
-                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-2xs"
-                  : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              onClick={() => setTimeFilter("WEEK")}
+              className={`transition-colors cursor-pointer ${
+                timeFilter === "WEEK"
+                  ? "text-zinc-900 dark:text-white font-bold"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
             >
-              Pengeluaran
+              WEEK
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("INCOME")}
-              className={`px-2.5 py-1 rounded-lg transition-all ${
-                activeTab === "INCOME"
-                  ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-2xs"
-                  : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+              onClick={() => setTimeFilter("MONTH")}
+              className={`transition-colors cursor-pointer ${
+                timeFilter === "MONTH"
+                  ? "text-zinc-900 dark:text-white font-bold"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
             >
-              Pemasukan
+              MONTH
+            </button>
+            <button
+              type="button"
+              onClick={() => setTimeFilter("YEAR")}
+              className={`transition-colors cursor-pointer ${
+                timeFilter === "YEAR"
+                  ? "text-zinc-900 dark:text-white font-bold"
+                  : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+              }`}
+            >
+              YEAR
             </button>
           </div>
         </div>
 
-        {/* Donut Chart */}
-        <DonutChart
-          items={activeBreakdown}
-          total={activeTotal}
-          emptyLabel={`Belum ada ${
-            activeTab === "EXPENSE" ? "pengeluaran" : "pemasukan"
-          }`}
-        />
+        {/* Section: Spending categories matching 2-column cards */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-bold text-zinc-900 dark:text-white">
+              Spending categories
+            </h2>
 
-        {/* Category List (FR-STAT-5) */}
-        {activeBreakdown.length > 0 && (
-          <div className="space-y-1.5 pt-2 border-t border-zinc-200/60 dark:border-zinc-700/60">
-            {activeBreakdown.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/transactions?categoryId=${cat.id}&year=${year}&month=${month}`}
-                className="p-2.5 rounded-2xl bg-white dark:bg-zinc-800/70 border border-zinc-100 dark:border-zinc-700/40 flex items-center justify-between hover:border-zinc-300 dark:hover:border-zinc-600 transition-all cursor-pointer group"
+            {/* Income / Expense Toggle */}
+            <div className="flex bg-zinc-100 dark:bg-[#161a22] p-0.5 rounded-xl text-[11px] font-semibold border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <button
+                type="button"
+                onClick={() => setActiveTab("EXPENSE")}
+                className={`px-2.5 py-1 rounded-lg transition-all ${
+                  activeTab === "EXPENSE"
+                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-2xs"
+                    : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+                }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0"
-                    style={{
-                      backgroundColor: `${cat.color}20`,
-                      color: cat.color,
-                    }}
-                  >
-                    <span>{cat.name.charAt(0).toUpperCase()}</span>
+                Keluar
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("INCOME")}
+                className={`px-2.5 py-1 rounded-lg transition-all ${
+                  activeTab === "INCOME"
+                    ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-2xs"
+                    : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+                }`}
+              >
+                Masuk
+              </button>
+            </div>
+          </div>
+
+          {activeBreakdown.length === 0 ? (
+            <div className="p-6 rounded-[22px] bg-white dark:bg-[#161a22] border border-dashed border-zinc-300 dark:border-zinc-800 text-center shadow-xs dark:shadow-md dark:shadow-black/20">
+              <p className="text-xs text-zinc-400">
+                Belum ada transaksi di bulan ini.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3">
+              {activeBreakdown.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={`/transactions?categoryId=${cat.id}&year=${year}&month=${month}`}
+                  className="p-3.5 rounded-[22px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-[#1b202a] flex flex-col justify-between transition-all group shadow-xs dark:shadow-md dark:shadow-black/20"
+                >
+                  <div className="flex items-start justify-between gap-1">
+                    <div className="text-sm font-bold font-mono text-zinc-900 dark:text-white truncate">
+                      {formatRupiah(cat.amount)}
+                    </div>
+                    <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 shrink-0">
+                      {cat.percentage}%
+                    </span>
                   </div>
-                  <div>
-                    <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+
+                  <div className="flex items-center gap-2 mt-3">
+                    <span
+                      className="w-2.5 h-2.5 rounded-full shrink-0 shadow-xs"
+                      style={{ backgroundColor: cat.color }}
+                    />
+                    <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 truncate group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
                       {cat.name}
-                    </div>
-                    <div className="text-[10px] text-zinc-400">
-                      {cat.transactionCount} transaksi
-                    </div>
+                    </span>
                   </div>
-                </div>
-
-                <div className="text-right">
-                  <div className="text-xs font-bold font-mono text-zinc-900 dark:text-zinc-100">
-                    {formatRupiah(cat.amount)}
-                  </div>
-                  <div className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
-                    {cat.percentage}%
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* 6 Months Trend Bar Chart (FR-STAT-4) */}
-      <div className="p-4 rounded-3xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-800 space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-800 dark:text-zinc-200">
-            <BarChart3 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Tren 6 Bulan Terakhir</span>
-          </div>
-          <span className="text-[10px] text-zinc-400">Masuk vs Keluar</span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
-        <BarChart6Months data={trend6Months} />
+        {/* 4 Summary Cards with crisp contrast */}
+        <div className="grid grid-cols-2 gap-2.5 pt-1">
+          {/* Income */}
+          <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-500 mb-1">
+              <TrendingUp className="w-4 h-4" />
+              <span>Pemasukan</span>
+            </div>
+            <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100 truncate">
+              {formatRupiah(summary.income)}
+            </div>
+          </div>
+
+          {/* Expense */}
+          <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-rose-500 mb-1">
+              <TrendingDown className="w-4 h-4" />
+              <span>Pengeluaran</span>
+            </div>
+            <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100 truncate">
+              {formatRupiah(summary.expense)}
+            </div>
+          </div>
+
+          {/* Saving (Selisih) */}
+          <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-500 mb-1">
+              <PiggyBank className="w-4 h-4" />
+              <span>Selisih</span>
+            </div>
+            <div
+              className={`text-sm font-extrabold font-mono truncate ${
+                summary.saving < 0
+                  ? "text-rose-500"
+                  : "text-zinc-900 dark:text-zinc-100"
+              }`}
+            >
+              {formatRupiah(summary.saving)}
+            </div>
+          </div>
+
+          {/* Saving Rate */}
+          <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-purple-500 mb-1">
+              <Percent className="w-4 h-4" />
+              <span>Saving Rate</span>
+            </div>
+            <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100">
+              {summary.savingRate !== null ? `${summary.savingRate}%` : "—"}
+            </div>
+          </div>
+        </div>
+
+        {/* 6 Months Trend Bar Chart */}
+        <div className="p-4 rounded-[24px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-800 dark:text-zinc-200">
+              <BarChart3 className="w-4 h-4 text-emerald-500" />
+              <span>Tren 6 Bulan Terakhir</span>
+            </div>
+            <span className="text-[10px] text-zinc-400">Masuk vs Keluar</span>
+          </div>
+
+          <BarChart6Months data={trend6Months} />
+        </div>
       </div>
     </div>
   );

@@ -15,29 +15,34 @@ interface DonutChartProps {
   items: DonutChartItem[];
   total: number;
   emptyLabel?: string;
+  centerSubtitle?: string;
 }
 
 export function DonutChart({
   items,
   total,
   emptyLabel = "Belum ada transaksi",
+  centerSubtitle,
 }: DonutChartProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   if (total <= 0 || items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center">
-        <div className="w-40 h-40 rounded-full border-4 border-dashed border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
+        <div className="w-44 h-44 rounded-full border-4 border-dashed border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
           <span className="text-xs text-zinc-400 font-medium">{emptyLabel}</span>
         </div>
       </div>
     );
   }
 
-  const size = 200;
-  const strokeWidth = 28;
+  const size = 220;
+  const strokeWidth = 20;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
+
+  // Segment gap in pixels
+  const gap = items.length > 1 ? 8 : 0;
 
   // Calculate cumulative offsets
   const offsets: number[] = [];
@@ -46,18 +51,23 @@ export function DonutChart({
     offsets.push(-accumulatedPercent * circumference);
     accumulatedPercent += item.amount / total;
   }
-  const slices = items.map((item, index) => ({
-    ...item,
-    strokeDasharray: `${(item.amount / total) * circumference} ${circumference}`,
-    strokeDashoffset: offsets[index],
-    index,
-  }));
+
+  const slices = items.map((item, index) => {
+    const rawLen = (item.amount / total) * circumference;
+    const arcLen = Math.max(2, rawLen - gap);
+    return {
+      ...item,
+      strokeDasharray: `${arcLen} ${circumference}`,
+      strokeDashoffset: offsets[index],
+      index,
+    };
+  });
 
   const activeItem = hoveredIndex !== null ? items[hoveredIndex] : null;
 
   return (
-    <div className="flex flex-col items-center justify-center py-2">
-      <div className="relative w-[200px] h-[200px] flex items-center justify-center">
+    <div className="flex flex-col items-center justify-center py-2 select-none">
+      <div className="relative w-[220px] h-[220px] flex items-center justify-center">
         <svg
           width={size}
           height={size}
@@ -72,10 +82,10 @@ export function DonutChart({
             fill="none"
             stroke="currentColor"
             strokeWidth={strokeWidth}
-            className="text-zinc-100 dark:text-zinc-800/80"
+            className="text-zinc-200/50 dark:text-zinc-800/60"
           />
 
-          {/* Slices */}
+          {/* Segmented Slices with rounded ends and gap */}
           {slices.map((slice) => {
             const isHovered = hoveredIndex === slice.index;
             return (
@@ -105,25 +115,25 @@ export function DonutChart({
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center">
           {activeItem ? (
             <>
-              <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 truncate max-w-[120px]">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-400 truncate max-w-[130px]">
                 {activeItem.name}
               </span>
-              <span className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100">
+              <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-900 dark:text-white mt-0.5 tracking-tight">
                 {formatRupiah(activeItem.amount)}
               </span>
-              <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+              <span className="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
                 {activeItem.percentage}%
               </span>
             </>
           ) : (
             <>
-              <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">
-                Total
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-400">
+                {centerSubtitle || "SPENT THIS MONTH"}
               </span>
-              <span className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100">
+              <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-900 dark:text-white mt-0.5 tracking-tight">
                 {formatRupiah(total)}
               </span>
-              <span className="text-[10px] text-zinc-400">
+              <span className="text-[10px] text-zinc-400 mt-0.5">
                 {items.length} Kategori
               </span>
             </>

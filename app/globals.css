@@ -5,11 +5,24 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Dashboard ambience: soft gradient wash + glow blobs */
+  --page-bg: #f7f8fa;
+  --aura-1: rgba(16, 185, 129, 0.16);
+  --aura-2: rgba(59, 130, 246, 0.14);
+  --aura-3: rgba(168, 85, 247, 0.10);
+  --grid-line: rgba(24, 24, 27, 0.035);
 }
 
 .dark {
   --background: #09090b;
   --foreground: #f4f4f5;
+
+  --page-bg: #0a0a0c;
+  --aura-1: rgba(16, 185, 129, 0.20);
+  --aura-2: rgba(59, 130, 246, 0.18);
+  --aura-3: rgba(168, 85, 247, 0.14);
+  --grid-line: rgba(255, 255, 255, 0.035);
 }
 
 @theme inline {
@@ -23,6 +36,62 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/*
+ * Aesthetic dashboard backdrop.
+ * Layered radial glows + a faint grid, all driven by CSS variables so it
+ * adapts to light/dark without duplicating markup.
+ * Rendered as a pseudo-element so it never intercepts taps.
+ */
+.aura-bg {
+  position: relative;
+  background-color: var(--page-bg);
+}
+
+.aura-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(60% 42% at 12% 0%, var(--aura-1) 0%, transparent 68%),
+    radial-gradient(58% 40% at 92% 8%, var(--aura-2) 0%, transparent 66%),
+    radial-gradient(78% 46% at 50% 104%, var(--aura-3) 0%, transparent 70%);
+}
+
+/* Grid sits above the glows but still below content */
+.aura-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 62%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 62%);
+}
+
+/* Direct children render above the backdrop layers */
+.aura-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Cards need an opaque-enough base so glows read as depth behind them */
+.aura-bg .aura-card {
+  background-color: var(--background);
+  backdrop-filter: blur(6px);
+}
+
+@supports (background-color: color-mix(in srgb, red 50%, transparent)) {
+  .aura-bg .aura-card {
+    background-color: color-mix(in srgb, var(--background) 88%, transparent);
+  }
 }
 
 html {
