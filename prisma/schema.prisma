@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum AccountType {
+  CASH
+  BANK
+  EWALLET
+  OTHER
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Account {
+  id             String        @id @default(cuid())
+  name           String        @unique
+  type           AccountType
+  initialBalance BigInt        @default(0)
+  icon           String?
+  isArchived     Boolean       @default(false)
+  sortOrder      Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  transactions   Transaction[]
+}
+
+model Category {
+  id         String        @id @default(cuid())
+  name       String
+  type       CategoryType
+  icon       String?
+  color      String?
+  isDefault  Boolean       @default(false)
+  isArchived Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@unique([name, type])
+}
+
+model Transaction {
+  id         String          @id @default(cuid())
+  type       TransactionType
+  amount     BigInt
+  note       String?
+  date       DateTime
+  accountId  String
+  categoryId String
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  account    Account         @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  category   Category        @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([date])
+  @@index([accountId, date])
+  @@index([categoryId, date])
+  @@index([type, date])
+}
+
+model Budget {
+  id         String   @id @default(cuid())
+  categoryId String
+  amount     BigInt
+  month      Int
+  year       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@unique([categoryId, month, year])
+  @@index([year, month])
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
