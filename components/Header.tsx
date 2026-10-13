@@ -24,14 +24,14 @@ export function Header({
   rightElement,
   children,
 }: HeaderProps) {
-  // Dashboard Header: Default blank avatar, full search pill, and settings button
+  // Dashboard Header: Default profile avatar, full search pill, and settings button
   if (isDashboard || showGreeting) {
     return (
-      <header className="flex items-center gap-3 px-5 pt-4 pb-3 sticky top-0 z-30 bg-white/80 dark:bg-[#0d1015]/85 backdrop-blur-xl backdrop-saturate-150 border-b border-zinc-200/40 dark:border-zinc-800/40">
-        {/* Left: Default blank profile avatar */}
+      <header className="flex items-center gap-3 px-5 pt-4 pb-3 sticky top-0 z-30 bg-[#0d1015]/85 backdrop-blur-xl backdrop-saturate-150 border-b border-zinc-800/40">
+        {/* Left: Default profile avatar */}
         <Link
           href="/settings"
-          className="w-10 h-10 rounded-full bg-white/80 dark:bg-[#1a1f28]/80 backdrop-blur-sm border border-zinc-200/60 dark:border-zinc-700/60 flex items-center justify-center text-zinc-500 dark:text-zinc-300 hover:text-zinc-700 dark:hover:text-white hover:border-zinc-300 dark:hover:border-zinc-600 transition-all shrink-0 shadow-sm"
+          className="w-10 h-10 rounded-full bg-[#1a1f28]/90 backdrop-blur-sm border border-zinc-700/60 flex items-center justify-center text-zinc-400 hover:text-zinc-200 hover:border-zinc-500 transition-all shrink-0 shadow-sm"
           aria-label="Profil & Pengaturan"
           title="Pengaturan"
         >

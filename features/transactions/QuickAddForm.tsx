@@ -154,8 +154,8 @@ export function QuickAddForm({
           onClick={() => handleTypeChange("EXPENSE")}
           className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
             type === "EXPENSE"
-              ? "bg-rose-500 text-white shadow-sm"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              ? "bg-zinc-800 text-white shadow-xs border border-zinc-700/60"
+              : "text-zinc-400 hover:text-zinc-200"
           }`}
         >
           Pengeluaran
@@ -165,8 +165,8 @@ export function QuickAddForm({
           onClick={() => handleTypeChange("INCOME")}
           className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
             type === "INCOME"
-              ? "bg-emerald-600 text-white shadow-sm"
-              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              ? "bg-zinc-800 text-white shadow-xs border border-zinc-700/60"
+              : "text-zinc-400 hover:text-zinc-200"
           }`}
         >
           Pemasukan
@@ -175,11 +175,11 @@ export function QuickAddForm({
 
       {/* Nominal Input & Quick Shortcuts */}
       <div>
-        <label className="block text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 mb-1">
+        <label className="block text-[11px] font-semibold text-zinc-400 mb-1">
           Nominal
         </label>
         <div className="relative flex items-center">
-          <span className="absolute left-4 text-lg font-bold text-zinc-400 dark:text-zinc-500">
+          <span className="absolute left-4 text-lg font-bold text-zinc-500">
             Rp
           </span>
           <input
@@ -189,7 +189,7 @@ export function QuickAddForm({
             value={displayAmount}
             onChange={handleAmountChange}
             placeholder="0"
-            className="w-full pl-12 pr-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 rounded-2xl text-2xl font-extrabold tracking-tight font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+            className="w-full pl-12 pr-4 py-3 bg-zinc-800/50 border border-zinc-700/80 rounded-2xl text-2xl font-extrabold tracking-tight font-mono text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-600 focus:border-transparent transition-all"
           />
         </div>
 
@@ -200,7 +200,7 @@ export function QuickAddForm({
               key={inc}
               type="button"
               onClick={() => handleAddShortcut(inc)}
-              className="px-2.5 py-1 text-[11px] font-medium rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors shrink-0 cursor-pointer"
+              className="px-2.5 py-1 text-[11px] font-medium rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors shrink-0 cursor-pointer"
             >
               +{formatRupiah(inc, { prefix: false })}
             </button>
@@ -210,7 +210,7 @@ export function QuickAddForm({
 
       {/* Category Grid (1 Tap Selection) */}
       <div>
-        <label className="block text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 mb-1.5">
+        <label className="block text-[11px] font-semibold text-zinc-400 mb-1.5">
           Kategori ({activeCategories.length})
         </label>
         {activeCategories.length === 0 ? (
@@ -229,8 +229,8 @@ export function QuickAddForm({
                   aria-pressed={isSelected}
                   className={`flex flex-col items-center justify-center min-h-16 p-2 rounded-xl border text-center transition-all cursor-pointer active:scale-95 ${
                     isSelected
-                      ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 font-semibold ring-1 ring-emerald-500"
-                      : "border-zinc-200/80 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                      ? "border-zinc-500 bg-zinc-800 text-white font-semibold ring-1 ring-zinc-500"
+                      : "border-zinc-800 bg-zinc-800/40 text-zinc-400 hover:bg-zinc-800"
                   }`}
                 >
                   <span
@@ -260,7 +260,7 @@ export function QuickAddForm({
           <select
             value={selectedAccountId}
             onChange={(e) => setSelectedAccountId(e.target.value)}
-            className="w-full px-3 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 rounded-xl text-xs font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+            className="w-full px-3 py-3 bg-zinc-800/50 border border-zinc-700/80 rounded-xl text-xs font-medium text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-600 cursor-pointer"
           >
             {accounts.map((acc) => (
               <option key={acc.id} value={acc.id}>
@@ -272,7 +272,7 @@ export function QuickAddForm({
 
         {/* Date Selector */}
         <div>
-          <label className="block text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 mb-1">
+          <label className="block text-[11px] font-semibold text-zinc-400 mb-1">
             Tanggal
           </label>
           <div className="relative flex items-center">
@@ -280,7 +280,7 @@ export function QuickAddForm({
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full px-3 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 rounded-xl text-xs font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+              className="w-full px-3 py-3 bg-zinc-800/50 border border-zinc-700/80 rounded-xl text-xs font-medium text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-600 cursor-pointer"
             />
           </div>
         </div>
@@ -288,7 +288,7 @@ export function QuickAddForm({
 
       {/* Note (Optional) */}
       <div>
-        <label className="block text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 mb-1">
+        <label className="block text-[11px] font-semibold text-zinc-400 mb-1">
           Catatan (opsional)
         </label>
         <div className="relative flex items-center">
@@ -298,14 +298,14 @@ export function QuickAddForm({
             onChange={(e) => setNote(e.target.value)}
             placeholder="Contoh: Makan siang bareng teman"
             maxLength={200}
-            className="w-full px-3 py-3 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/80 rounded-xl text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full px-3 py-3 bg-zinc-800/50 border border-zinc-700/80 rounded-xl text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-600"
           />
         </div>
       </div>
 
       {/* Warning / Error Message */}
       {errorMsg && (
-        <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-xs text-red-600 dark:text-red-400">
+        <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-950/40 border border-red-900/60 text-xs text-red-400">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{errorMsg}</span>
         </div>
@@ -317,7 +317,7 @@ export function QuickAddForm({
           type="button"
           onClick={() => handleSubmit(false)}
           disabled={isSubmitting}
-          className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer"
+          className="flex-1 py-3 px-4 rounded-xl bg-zinc-100 hover:bg-white active:bg-zinc-200 text-zinc-950 text-xs font-bold shadow-md shadow-black/40 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer"
         >
           {isSubmitting ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -331,7 +331,7 @@ export function QuickAddForm({
           type="button"
           onClick={() => handleSubmit(true)}
           disabled={isSubmitting}
-          className="py-3 px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1 transition-colors disabled:opacity-50 cursor-pointer"
+          className="py-3 px-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1 transition-colors disabled:opacity-50 cursor-pointer border border-zinc-700/60"
           title="Simpan & Tambah Lagi"
           aria-label="Simpan dan tambah lagi"
         >

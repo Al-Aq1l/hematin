@@ -211,7 +211,7 @@ export default function AccountsPage() {
           <button
             type="button"
             onClick={openAdd}
-            className="flex items-center gap-1 py-2 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+            className="flex items-center gap-1 py-2 px-3.5 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold shadow-xs transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah</span>
@@ -226,7 +226,7 @@ export default function AccountsPage() {
           <button
             type="button"
             onClick={() => setShowArchived(!showArchived)}
-            className="text-emerald-600 dark:text-emerald-400 font-medium hover:underline cursor-pointer"
+            className="text-zinc-400 hover:text-white font-medium cursor-pointer transition-colors"
           >
             {showArchived ? "Sembunyikan Arsip" : "Tampilkan Arsip"}
           </button>
@@ -238,7 +238,7 @@ export default function AccountsPage() {
             <Loader2 className="w-6 h-6 animate-spin" />
           </div>
         ) : filteredAccounts.length === 0 ? (
-          <div className="p-8 rounded-2xl border border-dashed text-center text-zinc-400 space-y-2">
+          <div className="p-8 rounded-2xl border border-dashed border-zinc-800 text-center text-zinc-400 space-y-2">
             <Wallet className="w-8 h-8 mx-auto opacity-50" />
             <p className="text-xs">Belum ada akun. Tambahkan akun pertamamu (mis. Cash atau BCA).</p>
           </div>
@@ -249,13 +249,13 @@ export default function AccountsPage() {
                 key={acc.id}
                 className={`p-4 rounded-2xl border transition-all ${
                   acc.isArchived
-                    ? "bg-zinc-50/50 dark:bg-zinc-900/50 backdrop-blur-md border-zinc-200/50 dark:border-zinc-800/50 opacity-60"
-                    : "bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border-zinc-200/80 dark:border-zinc-800/80 shadow-xs"
+                    ? "bg-[#161a22]/50 backdrop-blur-md border-zinc-800/50 opacity-60"
+                    : "bg-[#161a22]/80 backdrop-blur-md border-zinc-800/80 shadow-xs"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                    <div className="w-9 h-9 rounded-xl bg-zinc-800/90 text-zinc-300 border border-zinc-700/50 flex items-center justify-center font-bold">
                       {acc.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -434,7 +434,7 @@ export default function AccountsPage() {
                 type="button"
                 onClick={isAddOpen ? handleCreate : handleUpdate}
                 disabled={isPending}
-                className="flex-1 py-3 text-xs rounded-xl bg-emerald-600 text-white font-semibold flex items-center justify-center gap-1.5"
+                className="flex-1 py-3 text-xs rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 <span>Simpan</span>
@@ -476,9 +476,9 @@ export default function AccountsPage() {
                   <span className="font-mono">{formatRupiah(reconcilingAccount.initialBalance)}</span>
                 </div>
                 {reconcileBalance && (
-                  <div className="flex justify-between items-center pt-1.5 border-t border-zinc-200/50 dark:border-zinc-700/50 text-[11px]">
-                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">Saldo Awal Baru:</span>
-                    <span className="font-bold font-mono text-emerald-600 dark:text-emerald-400">
+                  <div className="flex justify-between items-center pt-1.5 border-t border-zinc-700/50 text-[11px]">
+                    <span className="text-zinc-400 font-medium">Saldo Awal Baru:</span>
+                    <span className="font-bold font-mono text-zinc-100">
                       {formatRupiah(
                         reconcilingAccount.initialBalance +
                           (parseRupiahInput(reconcileBalance) - reconcilingAccount.balance)
@@ -489,7 +489,7 @@ export default function AccountsPage() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-zinc-500 mb-1">
+                <label className="block text-[11px] font-semibold text-zinc-400 mb-1">
                   Saldo Riil / Sebenarnya Saat Ini (Rp)
                 </label>
                 <input
@@ -506,12 +506,12 @@ export default function AccountsPage() {
                     setReconcileBalance(parsed > 0 ? formatRupiah(parsed, { prefix: false }) : "");
                   }}
                   placeholder="0"
-                  className="w-full px-3 py-2 text-sm font-bold font-mono rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
+                  className="w-full px-3 py-2 text-sm font-bold font-mono rounded-xl bg-zinc-800 border border-zinc-700 text-zinc-100"
                 />
               </div>
 
               {errorMsg && (
-                <div className="p-2.5 rounded-xl bg-red-50 text-red-600 text-xs">
+                <div className="p-2.5 rounded-xl bg-red-950/40 text-red-400 border border-red-900/60 text-xs">
                   {errorMsg}
                 </div>
               )}
@@ -521,7 +521,7 @@ export default function AccountsPage() {
               <button
                 type="button"
                 onClick={() => setReconcilingAccount(null)}
-                className="flex-1 py-3 text-xs rounded-xl bg-zinc-100 dark:bg-zinc-800 font-semibold"
+                className="flex-1 py-3 text-xs rounded-xl bg-zinc-800 text-zinc-300 font-semibold hover:bg-zinc-700 transition-colors cursor-pointer"
               >
                 Batal
               </button>
@@ -529,7 +529,7 @@ export default function AccountsPage() {
                 type="button"
                 onClick={handleReconcile}
                 disabled={isPending}
-                className="flex-1 py-3 text-xs rounded-xl bg-emerald-600 text-white font-semibold flex items-center justify-center gap-1.5"
+                className="flex-1 py-3 text-xs rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 <span>Sesuaikan Saldo</span>

@@ -162,18 +162,18 @@ export default function TransactionsPage() {
               placeholder="Cari transaksi berdasarkan catatan..."
               enterKeyHint="search"
               aria-label="Cari transaksi"
-              className="w-full pl-9 pr-4 py-2.5 bg-white/70 dark:bg-[#161a22]/70 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-zinc-400 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100"
+              className="w-full pl-9 pr-4 py-2.5 bg-[#161a22]/70 backdrop-blur-md border border-zinc-800/80 rounded-2xl focus:outline-none focus:ring-1 focus:ring-zinc-600 placeholder:text-zinc-500 text-xs sm:text-sm text-zinc-100"
             />
           </div>
 
-          <div className="flex bg-white/70 dark:bg-[#161a22]/70 backdrop-blur-md p-1 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80">
+          <div className="flex bg-[#161a22]/70 backdrop-blur-md p-1 rounded-2xl border border-zinc-800/80">
             <button
               type="button"
               onClick={() => setTypeFilter("ALL")}
               className={`flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                 typeFilter === "ALL"
-                  ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                  ? "bg-zinc-800 text-white shadow-xs border border-zinc-700/60"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
               Semua
@@ -183,8 +183,8 @@ export default function TransactionsPage() {
               onClick={() => setTypeFilter("INCOME")}
               className={`flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                 typeFilter === "INCOME"
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                  ? "bg-zinc-800 text-white shadow-xs border border-zinc-700/60"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
               Pemasukan
@@ -194,8 +194,8 @@ export default function TransactionsPage() {
               onClick={() => setTypeFilter("EXPENSE")}
               className={`flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                 typeFilter === "EXPENSE"
-                  ? "bg-rose-500 text-white shadow-xs"
-                  : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                  ? "bg-zinc-800 text-white shadow-xs border border-zinc-700/60"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
               Pengeluaran
@@ -212,15 +212,15 @@ export default function TransactionsPage() {
             <Loader2 className="w-6 h-6 animate-spin" />
           </div>
         ) : dateKeys.length === 0 ? (
-          <div className="p-12 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 text-center flex flex-col items-center justify-center space-y-3 mt-4">
-            <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 text-zinc-400 flex items-center justify-center">
+          <div className="p-12 rounded-3xl border border-dashed border-zinc-800 text-center flex flex-col items-center justify-center space-y-3 mt-4">
+            <div className="w-12 h-12 rounded-2xl bg-zinc-800 text-zinc-400 flex items-center justify-center">
               <Receipt className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+              <h4 className="text-sm font-semibold text-zinc-200">
                 {searchQuery ? "Tidak ada transaksi yang cocok" : "Belum ada transaksi"}
               </h4>
-              <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1 max-w-xs">
+              <p className="text-xs text-zinc-500 mt-1 max-w-xs">
                 {searchQuery
                   ? "Coba ubah kata kunci pencarian atau bersihkan filter."
                   : "Mulai catat uangmu hari ini dengan menekan tombol di bawah."}
@@ -230,7 +230,7 @@ export default function TransactionsPage() {
               <button
                 type="button"
                 onClick={openQuickAdd}
-                className="mt-2 py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="mt-2 py-2 px-4 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>Tambah Transaksi</span>
@@ -253,43 +253,31 @@ export default function TransactionsPage() {
               return (
                 <div key={dateStr} className="space-y-1.5">
                   {/* Date Header & Subtotal */}
-                  <div className="flex items-center justify-between px-1 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
+                  <div className="flex items-center justify-between px-1 text-[11px] font-semibold text-zinc-400">
                     <span>{formatDateIndo(dateStr, { withDay: true })}</span>
-                    <span
-                      className={`font-mono ${
-                        subtotal > 0
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : subtotal < 0
-                          ? "text-zinc-600 dark:text-zinc-300"
-                          : "text-zinc-400"
-                      }`}
-                    >
+                    <span className="font-mono text-zinc-300">
                       {formatRupiah(subtotal, { showSign: true })}
                     </span>
                   </div>
 
                   {/* Transactions of this date */}
-                  <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md divide-y divide-zinc-100/80 dark:divide-zinc-800/60 overflow-hidden shadow-xs">
+                  <div className="rounded-2xl border border-zinc-800/80 bg-[#161a22]/80 backdrop-blur-md divide-y divide-zinc-800/60 overflow-hidden shadow-xs">
                     {dayTrxs.map((trx) => {
                       const isExpense = trx.type === "EXPENSE";
                       return (
                         <div
                           key={trx.id}
                           onClick={() => openDetail(trx)}
-                          className="p-3.5 flex items-center justify-between hover:bg-zinc-50/60 dark:hover:bg-[#1b202a]/60 transition-colors cursor-pointer"
+                          className="p-3.5 flex items-center justify-between hover:bg-[#1b202a]/60 transition-colors cursor-pointer"
                         >
                           <div className="flex items-center gap-3">
                             <div
-                              className="w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-sm shrink-0"
-                              style={{
-                                backgroundColor: `${trx.category.color || "#6B7280"}20`,
-                                color: trx.category.color || "#6B7280",
-                              }}
+                              className="w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-sm shrink-0 bg-zinc-800/90 text-zinc-300 border border-zinc-700/40"
                             >
                               <span>{trx.category.name.charAt(0).toUpperCase()}</span>
                             </div>
                             <div>
-                              <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+                              <div className="text-xs font-bold text-zinc-100 flex items-center gap-1.5">
                                 <span>{trx.note || trx.category.name}</span>
                               </div>
                               <div className="text-[10px] text-zinc-400 flex items-center gap-1 mt-0.5">
@@ -301,13 +289,7 @@ export default function TransactionsPage() {
                           </div>
 
                           <div className="text-right">
-                            <div
-                              className={`text-xs font-bold font-mono ${
-                                isExpense
-                                  ? "text-zinc-900 dark:text-zinc-100"
-                                  : "text-emerald-600 dark:text-emerald-400"
-                              }`}
-                            >
+                            <div className="text-xs font-bold font-mono text-zinc-100">
                               {formatRupiah(trx.amount, {
                                 showSign: !isExpense,
                                 prefix: true,

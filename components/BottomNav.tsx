@@ -35,7 +35,7 @@ export function BottomNav() {
     <>
       {isNavigating && (
         <div className="fixed top-0 left-0 right-0 h-0.5 z-50 overflow-hidden pointer-events-none">
-          <div className="nav-progress h-full w-1/3 bg-emerald-500 rounded-full" />
+          <div className="nav-progress h-full w-1/3 bg-zinc-200 rounded-full" />
         </div>
       )}
 
@@ -43,7 +43,7 @@ export function BottomNav() {
         className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none"
         aria-label="Navigasi Utama"
       >
-        <div className="w-full max-w-md pointer-events-auto bg-white/85 dark:bg-[#0d1015]/90 backdrop-blur-xl backdrop-saturate-150 border-t border-zinc-200/50 dark:border-zinc-800/50 px-3 py-2 flex items-center justify-between pb-[calc(0.6rem+env(safe-area-inset-bottom))] shadow-2xl">
+        <div className="w-full max-w-md pointer-events-auto bg-[#0d1015]/95 backdrop-blur-xl backdrop-saturate-150 border-t border-zinc-800/80 px-3 py-2 flex items-center justify-between pb-[calc(0.6rem+env(safe-area-inset-bottom))] shadow-2xl">
           {navItems.map((item, idx) => {
             if (item.isAction) {
               return (
@@ -51,12 +51,12 @@ export function BottomNav() {
                   <button
                     type="button"
                     onClick={openQuickAdd}
-                    className="group relative flex items-center justify-center w-12 h-12 rounded-[18px] bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white shadow-lg shadow-emerald-600/35 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-emerald-500/30"
+                    className="group relative flex items-center justify-center w-12 h-12 rounded-[18px] bg-zinc-100 hover:bg-white active:scale-95 text-zinc-950 shadow-lg shadow-black/50 border border-white/20 transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-zinc-400"
                     aria-label="Catat Transaksi Cepat"
                   >
                     <div className="relative">
-                      <CreditCard className="w-5 h-5 text-white" />
-                      <Plus className="w-3 h-3 text-white absolute -top-1 -right-1 stroke-[3]" />
+                      <CreditCard className="w-5 h-5 text-zinc-950" />
+                      <Plus className="w-3 h-3 text-zinc-950 absolute -top-1 -right-1 stroke-[3]" />
                     </div>
                   </button>
                 </div>
@@ -85,12 +85,12 @@ export function BottomNav() {
                 aria-busy={isLoading || undefined}
                 className={`relative flex flex-col items-center justify-center min-w-12 min-h-12 py-1 px-2 rounded-xl transition-colors cursor-pointer ${
                   isActive
-                    ? "text-emerald-600 dark:text-emerald-400 font-semibold"
-                    : "text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300 font-normal"
+                    ? "text-white font-semibold"
+                    : "text-zinc-500 hover:text-zinc-300 font-normal"
                 }`}
               >
                 {isActive && (
-                  <span className="nav-indicator absolute -top-2 h-0.5 w-5 rounded-full bg-emerald-500" />
+                  <span className="nav-indicator absolute -top-2 h-0.5 w-5 rounded-full bg-zinc-200" />
                 )}
                 <span className={`nav-icon ${isActive ? "nav-icon-active" : ""}`}>
                   {isLoading ? (

@@ -183,24 +183,20 @@ export default function BudgetPage() {
     switch (status) {
       case "SAFE":
         return {
-          bar: "bg-emerald-500",
-          badge: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400",
+          bar: "bg-zinc-200",
+          badge: "bg-zinc-800 text-zinc-300 border border-zinc-700/60",
         };
       case "WARNING":
         return {
-          bar: "bg-amber-500",
-          badge: "bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400",
+          bar: "bg-zinc-400",
+          badge: "bg-zinc-800 text-zinc-300 border border-zinc-700/60",
         };
       case "CRITICAL":
-        return {
-          bar: "bg-orange-500",
-          badge: "bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400",
-        };
       case "OVER_BUDGET":
       default:
         return {
-          bar: "bg-rose-500",
-          badge: "bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400",
+          bar: "bg-zinc-500",
+          badge: "bg-zinc-800 text-zinc-400 border border-zinc-700/60",
         };
     }
   };
@@ -211,26 +207,26 @@ export default function BudgetPage() {
 
       <div className="px-5 space-y-4 mt-2">
         {/* Month Selector Bar with Navigation */}
-        <div className="flex items-center justify-between p-2 rounded-2xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs">
+        <div className="flex items-center justify-between p-2 rounded-2xl bg-[#161a22]/80 backdrop-blur-md border border-zinc-800/80 shadow-xs">
           <button
             type="button"
             onClick={handlePrevMonth}
-            className="p-2 rounded-xl text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-700/50 transition-colors cursor-pointer"
             aria-label="Bulan Sebelumnya"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
 
           <div className="text-center">
-            <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+            <div className="text-sm font-bold text-zinc-100">
               {INDO_MONTHS[selectedMonth - 1]} {selectedYear}
             </div>
             {selectedYear === currentYM.year && selectedMonth === currentYM.month ? (
-              <div className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+              <div className="text-[10px] font-medium text-zinc-400">
                 Bulan Ini ({data?.remainingDays} hari tersisa)
               </div>
             ) : (
-              <div className="text-[10px] text-zinc-400">Arsip Periode</div>
+              <div className="text-[10px] text-zinc-500">Arsip Periode</div>
             )}
           </div>
 
@@ -338,21 +334,17 @@ export default function BudgetPage() {
                   <div
                     key={item.categoryId}
                     onClick={() => openSetBudget(item)}
-                    className="p-3.5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md hover:bg-white/90 dark:hover:bg-[#1b202a]/80 transition-all cursor-pointer shadow-xs space-y-2"
+                    className="p-3.5 rounded-2xl border border-zinc-800/80 bg-[#161a22]/80 backdrop-blur-md hover:border-zinc-700 hover:bg-[#1b202a]/80 transition-all cursor-pointer shadow-xs space-y-2"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs"
-                          style={{
-                            backgroundColor: `${item.categoryColor || "#6B7280"}20`,
-                            color: item.categoryColor || "#6B7280",
-                          }}
+                          className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs bg-zinc-800/90 text-zinc-300 border border-zinc-700/40"
                         >
                           {item.categoryName.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                          <div className="text-xs font-bold text-zinc-100">
                             {item.categoryName}
                           </div>
                           {item.hasBudget && item.dailySafeSpend > 0 && (
@@ -367,11 +359,11 @@ export default function BudgetPage() {
                       <div className="text-right">
                         {item.hasBudget ? (
                           <>
-                            <div className="text-xs font-bold font-mono text-zinc-900 dark:text-zinc-100">
+                            <div className="text-xs font-bold font-mono text-zinc-100">
                               {formatRupiah(item.usedAmount)} / {formatRupiah(item.budgetAmount)}
                             </div>
                             <span
-                              className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full inline-block mt-0.5 ${colors.badge}`}
+                              className={`text-[9px] font-medium px-2 py-0.5 rounded-full inline-block mt-0.5 ${colors.badge}`}
                             >
                               {item.percentage}% · {item.statusLabel}
                             </span>
@@ -381,7 +373,7 @@ export default function BudgetPage() {
                             <div className="text-xs font-mono text-zinc-400">
                               Keluar: {formatRupiah(item.usedAmount)}
                             </div>
-                            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-0.5 justify-end mt-0.5">
+                            <span className="text-[10px] text-zinc-400 hover:text-white font-medium flex items-center gap-0.5 justify-end mt-0.5 transition-colors">
                               <Plus className="w-3 h-3" />
                               <span>Atur Budget</span>
                             </span>

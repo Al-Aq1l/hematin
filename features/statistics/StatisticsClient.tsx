@@ -193,7 +193,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
                       className="w-2.5 h-2.5 rounded-full shrink-0 shadow-xs"
                       style={{ backgroundColor: cat.color }}
                     />
-                    <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 truncate group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
+                    <span className="text-xs font-medium text-zinc-300 truncate group-hover:text-white transition-colors">
                       {cat.name}
                     </span>
                   </div>

@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { logoutAction } from "@/actions/auth";
-import { ThemeSelector } from "@/components/ThemeSelector";
 import {
   Wallet,
   Tag,
   Database,
-  Moon,
   LogOut,
   ChevronRight,
   ShieldCheck,
@@ -42,14 +40,14 @@ export default function SettingsPage() {
         {/* Security / Status Card */}
         <div className="p-4 rounded-3xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-2xl bg-zinc-800/90 text-zinc-300 border border-zinc-700/50 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
                 Mode Pemilik Aktif
               </div>
-              <div className="text-[11px] text-zinc-500">
+              <div className="text-[11px] text-zinc-400">
                 Sesi privat terlindungi cookie bertanda tangan HMAC
               </div>
             </div>
@@ -72,36 +70,21 @@ export default function SettingsPage() {
                   className="flex items-center justify-between p-3.5 hover:bg-zinc-50/60 dark:hover:bg-[#1b202a]/60 transition-colors cursor-pointer group"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/40 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <div className="w-8 h-8 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 flex items-center justify-center group-hover:bg-zinc-700/80 group-hover:text-white transition-colors">
                       <Icon className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                      <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-white transition-colors">
                         {item.label}
                       </div>
                       <div className="text-[10px] text-zinc-400">{item.description}</div>
                     </div>
                   </div>
 
-                  <ChevronRight className="w-4 h-4 text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-500 transition-colors" />
+                  <ChevronRight className="w-4 h-4 text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-400 transition-colors" />
                 </Link>
               );
             })}
-          </div>
-        </div>
-
-        {/* Theme Settings Card (FR-THEME) */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-400 px-1">
-            <Moon className="w-3.5 h-3.5" />
-            <span>Tampilan &amp; Tema</span>
-          </div>
-
-          <div className="p-3.5 rounded-3xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 space-y-2">
-            <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
-              Pilihan Mode Warna
-            </div>
-            <ThemeSelector />
           </div>
         </div>
 

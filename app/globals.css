@@ -3,15 +3,15 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #09090b;
+  --foreground: #f4f4f5;
 
-  /* Dashboard ambience: soft gradient wash + glow blobs */
-  --page-bg: #f7f8fa;
-  --aura-1: rgba(16, 185, 129, 0.16);
-  --aura-2: rgba(59, 130, 246, 0.14);
-  --aura-3: rgba(168, 85, 247, 0.10);
-  --grid-line: rgba(24, 24, 27, 0.035);
+  /* Ambient dark surface tokens */
+  --page-bg: #0a0a0c;
+  --aura-1: rgba(255, 255, 255, 0.04);
+  --aura-2: rgba(255, 255, 255, 0.02);
+  --aura-3: rgba(255, 255, 255, 0.02);
+  --grid-line: rgba(255, 255, 255, 0.03);
 }
 
 .dark {

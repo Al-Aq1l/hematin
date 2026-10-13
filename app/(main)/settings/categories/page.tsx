@@ -216,7 +216,7 @@ export default function CategoriesPage() {
           <button
             type="button"
             onClick={openAdd}
-            className="flex items-center gap-1 py-2 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+            className="flex items-center gap-1 py-2 px-3.5 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold shadow-xs transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah</span>
@@ -226,14 +226,14 @@ export default function CategoriesPage() {
 
       <div className="px-5 mt-4 space-y-4">
         {/* Type Toggle Tabs */}
-        <div className="flex bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md p-1 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs">
+        <div className="flex bg-[#161a22]/80 backdrop-blur-md p-1 rounded-2xl border border-zinc-800/80 shadow-xs">
           <button
             type="button"
             onClick={() => setActiveTab("EXPENSE")}
             className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
               activeTab === "EXPENSE"
-                ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500"
+                ? "bg-zinc-800 text-white shadow-xs border border-zinc-700/60"
+                : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
             Pengeluaran
@@ -243,8 +243,8 @@ export default function CategoriesPage() {
             onClick={() => setActiveTab("INCOME")}
             className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
               activeTab === "INCOME"
-                ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                : "text-zinc-500"
+                ? "bg-zinc-800 text-white shadow-xs border border-zinc-700/60"
+                : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
             Pemasukan
@@ -257,7 +257,7 @@ export default function CategoriesPage() {
           <button
             type="button"
             onClick={() => setShowArchived(!showArchived)}
-            className="text-emerald-600 dark:text-emerald-400 font-medium hover:underline cursor-pointer"
+            className="text-zinc-400 hover:text-white font-medium cursor-pointer transition-colors"
           >
             {showArchived ? "Sembunyikan Arsip" : "Tampilkan Arsip"}
           </button>
@@ -471,7 +471,7 @@ export default function CategoriesPage() {
                 type="button"
                 onClick={isAddOpen ? handleCreate : handleUpdate}
                 disabled={isPending}
-                className="flex-1 py-3 text-xs rounded-xl bg-emerald-600 text-white font-semibold flex items-center justify-center gap-1.5"
+                className="flex-1 py-3 text-xs rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 <span>Simpan</span>
