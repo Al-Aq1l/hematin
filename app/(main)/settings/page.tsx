@@ -36,11 +36,11 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col flex-1 pb-6">
-      <Header title="Pengaturan" showGreeting={false} showSettings={false} />
+      <Header title="Pengaturan" showBack backHref="/" showGreeting={false} showSettings={false} />
 
       <div className="px-5 space-y-5 mt-2">
         {/* Security / Status Card */}
-        <div className="p-4 rounded-3xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-800 flex items-center justify-between">
+        <div className="p-4 rounded-3xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5" />
@@ -62,17 +62,17 @@ export default function SettingsPage() {
             Data Master &amp; Pencatatan
           </h3>
 
-          <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-800/40 divide-y divide-zinc-100 dark:divide-zinc-800/60 overflow-hidden shadow-2xs">
+          <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md divide-y divide-zinc-100/80 dark:divide-zinc-800/60 overflow-hidden shadow-2xs">
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="flex items-center justify-between p-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors cursor-pointer group"
+                  className="flex items-center justify-between p-3.5 hover:bg-zinc-50/60 dark:hover:bg-[#1b202a]/60 transition-colors cursor-pointer group"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/40 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <div className="w-8 h-8 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/40 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                       <Icon className="w-4 h-4" />
                     </div>
                     <div>
@@ -97,7 +97,7 @@ export default function SettingsPage() {
             <span>Tampilan &amp; Tema</span>
           </div>
 
-          <div className="p-3.5 rounded-3xl bg-white dark:bg-zinc-800/40 border border-zinc-200/80 dark:border-zinc-800 space-y-2">
+          <div className="p-3.5 rounded-3xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 space-y-2">
             <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
               Pilihan Mode Warna
             </div>

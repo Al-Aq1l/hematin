@@ -151,11 +151,8 @@ export default function TransactionsPage() {
 
   return (
     <div className="flex flex-col flex-1 pb-10">
-      <Header title="Riwayat Transaksi" showGreeting={false} />
-
-      <div className="px-5 space-y-1 mt-2">
-        {/* Search & Type Filter stays visible while scrolling the list */}
-        <div className="sticky top-16 z-20 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md pt-2 pb-2 border-b border-zinc-200/70 dark:border-zinc-800/70 -mx-5 px-5 space-y-2">
+      <Header title="Riwayat Transaksi" showGreeting={false}>
+        <div className="space-y-2 pt-1">
           <div className="relative">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
@@ -165,18 +162,18 @@ export default function TransactionsPage() {
               placeholder="Cari transaksi berdasarkan catatan..."
               enterKeyHint="search"
               aria-label="Cari transaksi"
-              className="w-full pl-9 pr-4 py-3 bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-zinc-400"
+              className="w-full pl-9 pr-4 py-2.5 bg-white/70 dark:bg-[#161a22]/70 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder:text-zinc-400 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100"
             />
           </div>
 
-          <div className="flex bg-zinc-100 dark:bg-zinc-800/80 p-1 rounded-2xl">
+          <div className="flex bg-white/70 dark:bg-[#161a22]/70 backdrop-blur-md p-1 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80">
             <button
               type="button"
               onClick={() => setTypeFilter("ALL")}
-              className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                 typeFilter === "ALL"
                   ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-xs"
-                  : "text-zinc-500"
+                  : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
             >
               Semua
@@ -184,10 +181,10 @@ export default function TransactionsPage() {
             <button
               type="button"
               onClick={() => setTypeFilter("INCOME")}
-              className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                 typeFilter === "INCOME"
                   ? "bg-emerald-600 text-white shadow-xs"
-                  : "text-zinc-500"
+                  : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
             >
               Pemasukan
@@ -195,16 +192,19 @@ export default function TransactionsPage() {
             <button
               type="button"
               onClick={() => setTypeFilter("EXPENSE")}
-              className={`flex-1 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                 typeFilter === "EXPENSE"
                   ? "bg-rose-500 text-white shadow-xs"
-                  : "text-zinc-500"
+                  : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               }`}
             >
               Pengeluaran
             </button>
           </div>
         </div>
+      </Header>
+
+      <div className="px-5 space-y-4 mt-4">
 
         {/* Transactions List */}
         {loading ? (
@@ -269,14 +269,14 @@ export default function TransactionsPage() {
                   </div>
 
                   {/* Transactions of this date */}
-                  <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-800/40 divide-y divide-zinc-100 dark:divide-zinc-800/60 overflow-hidden shadow-xs">
+                  <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md divide-y divide-zinc-100/80 dark:divide-zinc-800/60 overflow-hidden shadow-xs">
                     {dayTrxs.map((trx) => {
                       const isExpense = trx.type === "EXPENSE";
                       return (
                         <div
                           key={trx.id}
                           onClick={() => openDetail(trx)}
-                          className="p-3.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors cursor-pointer"
+                          className="p-3.5 flex items-center justify-between hover:bg-zinc-50/60 dark:hover:bg-[#1b202a]/60 transition-colors cursor-pointer"
                         >
                           <div className="flex items-center gap-3">
                             <div

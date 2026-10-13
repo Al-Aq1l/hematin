@@ -3,6 +3,7 @@
 import { useState, useEffect, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Header } from "@/components/Header";
 import { formatRupiah, parseRupiahInput } from "@/lib/money";
 import {
   getAccounts,
@@ -202,28 +203,21 @@ export default function AccountsPage() {
   return (
     <div className="flex flex-col flex-1 pb-10">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-zinc-200 dark:border-zinc-800">
-        <div className="flex items-center gap-2">
-          <Link
-            href="/settings"
-            className="p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+      <Header
+        title="Manajemen Akun"
+        showBack
+        backHref="/settings"
+        rightElement={
+          <button
+            type="button"
+            onClick={openAdd}
+            className="flex items-center gap-1 py-2 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-5 h-5 text-zinc-600 dark:text-zinc-300" />
-          </Link>
-          <h1 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
-            Manajemen Akun
-          </h1>
-        </div>
-
-        <button
-          type="button"
-          onClick={openAdd}
-          className="flex items-center gap-1 py-2.5 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Tambah</span>
-        </button>
-      </div>
+            <Plus className="w-4 h-4" />
+            <span>Tambah</span>
+          </button>
+        }
+      />
 
       <div className="px-5 mt-4 space-y-4">
         {/* Toggle Archived */}
@@ -255,8 +249,8 @@ export default function AccountsPage() {
                 key={acc.id}
                 className={`p-4 rounded-2xl border transition-all ${
                   acc.isArchived
-                    ? "bg-zinc-50 dark:bg-zinc-900 border-zinc-200/50 dark:border-zinc-800/50 opacity-60"
-                    : "bg-white dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700/70 shadow-xs"
+                    ? "bg-zinc-50/50 dark:bg-zinc-900/50 backdrop-blur-md border-zinc-200/50 dark:border-zinc-800/50 opacity-60"
+                    : "bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border-zinc-200/80 dark:border-zinc-800/80 shadow-xs"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">

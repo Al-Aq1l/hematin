@@ -43,7 +43,7 @@ export function BottomNav() {
         className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none"
         aria-label="Navigasi Utama"
       >
-        <div className="w-full max-w-md pointer-events-auto bg-white/95 dark:bg-[#12151c]/95 backdrop-blur-xl border-t border-zinc-200/90 dark:border-zinc-800 px-3 py-2 flex items-center justify-between pb-[calc(0.6rem+env(safe-area-inset-bottom))] shadow-2xl">
+        <div className="w-full max-w-md pointer-events-auto bg-white/85 dark:bg-[#0d1015]/90 backdrop-blur-xl backdrop-saturate-150 border-t border-zinc-200/50 dark:border-zinc-800/50 px-3 py-2 flex items-center justify-between pb-[calc(0.6rem+env(safe-area-inset-bottom))] shadow-2xl">
           {navItems.map((item, idx) => {
             if (item.isAction) {
               return (

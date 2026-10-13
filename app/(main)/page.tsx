@@ -59,10 +59,10 @@ export default async function DashboardPage() {
           <DebitCard accounts={accounts} totalBalance={totalBalance} />
         </div>
 
-        {/* 3 Monthly Cash Flow Cards: High contrast elevated cards */}
+        {/* 3 Monthly Cash Flow Cards: High contrast elevated cards with glassmorphism blend */}
         <div className="grid grid-cols-3 gap-2">
           {/* Masuk */}
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/30 flex flex-col justify-between">
+          <div className="p-3.5 rounded-2xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/25 flex flex-col justify-between">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mb-1.5">
               <TrendingUp className="w-3.5 h-3.5" />
               <span>Masuk</span>
@@ -73,7 +73,7 @@ export default async function DashboardPage() {
           </div>
 
           {/* Keluar */}
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/30 flex flex-col justify-between">
+          <div className="p-3.5 rounded-2xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/25 flex flex-col justify-between">
             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-rose-600 dark:text-rose-400 mb-1.5">
               <TrendingDown className="w-3.5 h-3.5" />
               <span>Keluar</span>
@@ -84,7 +84,7 @@ export default async function DashboardPage() {
           </div>
 
           {/* Selisih (Saving / Arus Kas Bersih) */}
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/30 flex flex-col justify-between">
+          <div className="p-3.5 rounded-2xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/25 flex flex-col justify-between">
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400">
                 <PiggyBank className="w-3.5 h-3.5" />
@@ -93,10 +93,10 @@ export default async function DashboardPage() {
               <span
                 className={`text-[9px] px-1.5 py-0.5 rounded-md font-semibold tracking-tight border ${
                   summary.saving < 0
-                    ? "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 border-rose-200 dark:border-rose-900/50"
+                    ? "bg-rose-50/80 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 border-rose-200/80 dark:border-rose-900/50"
                     : summary.saving > 0
-                    ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900/50"
-                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700"
+                    ? "bg-emerald-50/80 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300 border-emerald-200/80 dark:border-emerald-900/50"
+                    : "bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-500 border-zinc-200/80 dark:border-zinc-700/80"
                 }`}
               >
                 {summary.saving < 0 ? "Defisit" : summary.saving > 0 ? "Surplus" : "0"}
@@ -131,7 +131,7 @@ export default async function DashboardPage() {
           </div>
 
           {accounts.length === 0 ? (
-            <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-amber-50/80 dark:bg-amber-950/40 backdrop-blur-md border border-amber-200/80 dark:border-amber-900/60 flex items-center justify-between">
               <div>
                 <div className="text-xs font-bold text-amber-900 dark:text-amber-200">
                   Setup Akun Pertamamu
@@ -154,7 +154,7 @@ export default async function DashboardPage() {
                   <Link
                     key={acc.id}
                     href={`/transactions?accountId=${acc.id}`}
-                    className="p-3.5 rounded-2xl bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-[#1b202a] flex items-center justify-between transition-all cursor-pointer group shadow-xs dark:shadow-md dark:shadow-black/25"
+                    className="p-3.5 rounded-2xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-white/90 dark:hover:bg-[#1b202a]/80 flex items-center justify-between transition-all cursor-pointer group shadow-xs dark:shadow-md dark:shadow-black/25"
                   >
                     <div>
                       <div className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
@@ -180,7 +180,7 @@ export default async function DashboardPage() {
         {/* Budget Bulan Ini Card: Crisp border and track */}
         <Link
           href="/budget"
-          className="block p-4 rounded-2xl bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-[#1b202a] space-y-2.5 transition-all cursor-pointer shadow-xs dark:shadow-md dark:shadow-black/25"
+          className="block p-4 rounded-2xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-white/90 dark:hover:bg-[#1b202a]/80 space-y-2.5 transition-all cursor-pointer shadow-xs dark:shadow-md dark:shadow-black/25"
         >
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1.5 font-semibold text-zinc-900 dark:text-zinc-200">
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
             </span>
           </div>
 
-          <div className="w-full bg-zinc-100 dark:bg-zinc-800/90 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-zinc-100/80 dark:bg-zinc-800/80 h-2 rounded-full overflow-hidden">
             <div
               className={`h-full transition-all duration-500 ${
                 budgetStatusColors.split(" ")[0]
@@ -230,7 +230,7 @@ export default async function DashboardPage() {
           </div>
 
           {recentTransactions.length === 0 ? (
-            <div className="p-8 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 text-center flex flex-col items-center justify-center space-y-2">
+            <div className="p-8 rounded-3xl border border-dashed border-zinc-200/80 dark:border-zinc-800/80 bg-white/40 dark:bg-[#161a22]/40 backdrop-blur-md text-center flex flex-col items-center justify-center space-y-2">
               <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-400 flex items-center justify-center">
                 <PlusCircle className="w-5 h-5" />
               </div>
@@ -242,13 +242,13 @@ export default async function DashboardPage() {
               </p>
             </div>
           ) : (
-            <div className="rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-[#161a22] divide-y divide-zinc-100 dark:divide-zinc-800/80 overflow-hidden shadow-xs dark:shadow-md dark:shadow-black/25">
+            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md divide-y divide-zinc-100/80 dark:divide-zinc-800/70 overflow-hidden shadow-xs dark:shadow-md dark:shadow-black/25">
               {recentTransactions.map((trx) => {
                 const isExpense = trx.type === "EXPENSE";
                 return (
                   <div
                     key={trx.id}
-                    className="p-3.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-[#1b202a] transition-colors"
+                    className="p-3.5 flex items-center justify-between hover:bg-zinc-50/60 dark:hover:bg-[#1b202a]/60 transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div

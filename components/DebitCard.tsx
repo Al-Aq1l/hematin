@@ -34,7 +34,7 @@ export function DebitCard({ accounts, totalBalance }: DebitCardProps) {
   return (
     <div className="w-full select-none">
       {/* Debit Card Box: Elevated card with crisp contrast & specular glow */}
-      <div className="relative w-full rounded-[28px] p-6 bg-gradient-to-br from-[#252b36] via-[#1c212a] to-[#14171f] text-white border border-zinc-700/70 dark:border-zinc-700/80 ring-1 ring-inset ring-white/[0.1] shadow-2xl shadow-black/50 overflow-hidden transition-all duration-300">
+      <div className="relative w-full rounded-[28px] p-6 bg-gradient-to-br from-[#252b36]/90 via-[#1c212a]/85 to-[#14171f]/90 backdrop-blur-md text-white border border-zinc-700/70 dark:border-zinc-700/80 ring-1 ring-inset ring-white/[0.1] shadow-2xl shadow-black/50 overflow-hidden transition-all duration-300">
         {/* Subtle specular reflection gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-black/[0.3] pointer-events-none" />
 

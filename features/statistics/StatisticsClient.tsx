@@ -47,7 +47,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
   return (
     <div className="space-y-6">
       {/* Top Header: < HOME on left, Calendar Month Year on right */}
-      <div className="flex items-center justify-between px-5 pt-3 pb-2 sticky top-0 z-30 bg-zinc-50/90 dark:bg-[#0d1015]/90 backdrop-blur-md">
+      <div className="flex items-center justify-between px-5 pt-4 pb-3 sticky top-0 z-30 bg-white/80 dark:bg-[#0d1015]/85 backdrop-blur-xl backdrop-saturate-150 border-b border-zinc-200/40 dark:border-zinc-800/40">
         <Link
           href="/"
           className="flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
@@ -57,7 +57,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
         </Link>
 
         {/* Month Navigator with Calendar Icon */}
-        <div className="flex items-center gap-1.5 bg-zinc-100 dark:bg-[#161a22] px-2.5 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20">
+        <div className="flex items-center gap-1.5 bg-white/80 dark:bg-[#1a1f28]/80 backdrop-blur-sm px-2.5 py-1.5 rounded-full border border-zinc-200/60 dark:border-zinc-700/60 shadow-sm">
           <Link
             href={`/statistics?year=${prevYM.year}&month=${prevYM.month}`}
             className="p-1 rounded-full text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
@@ -139,7 +139,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
             </h2>
 
             {/* Income / Expense Toggle */}
-            <div className="flex bg-zinc-100 dark:bg-[#161a22] p-0.5 rounded-xl text-[11px] font-semibold border border-zinc-200 dark:border-zinc-800 shadow-xs">
+            <div className="flex bg-white/70 dark:bg-[#161a22]/70 backdrop-blur-md p-0.5 rounded-xl text-[11px] font-semibold border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs">
               <button
                 type="button"
                 onClick={() => setActiveTab("EXPENSE")}
@@ -166,7 +166,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
           </div>
 
           {activeBreakdown.length === 0 ? (
-            <div className="p-6 rounded-[22px] bg-white dark:bg-[#161a22] border border-dashed border-zinc-300 dark:border-zinc-800 text-center shadow-xs dark:shadow-md dark:shadow-black/20">
+            <div className="p-6 rounded-[22px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-dashed border-zinc-300/80 dark:border-zinc-800/80 text-center shadow-xs dark:shadow-md dark:shadow-black/20">
               <p className="text-xs text-zinc-400">
                 Belum ada transaksi di bulan ini.
               </p>
@@ -177,7 +177,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
                 <Link
                   key={cat.id}
                   href={`/transactions?categoryId=${cat.id}&year=${year}&month=${month}`}
-                  className="p-3.5 rounded-[22px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-[#1b202a] flex flex-col justify-between transition-all group shadow-xs dark:shadow-md dark:shadow-black/20"
+                  className="p-3.5 rounded-[22px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-white/90 dark:hover:bg-[#1b202a]/80 flex flex-col justify-between transition-all group shadow-xs dark:shadow-md dark:shadow-black/20"
                 >
                   <div className="flex items-start justify-between gap-1">
                     <div className="text-sm font-bold font-mono text-zinc-900 dark:text-white truncate">
@@ -203,10 +203,10 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
           )}
         </div>
 
-        {/* 4 Summary Cards with crisp contrast */}
+        {/* 4 Summary Cards with glassmorphism blend */}
         <div className="grid grid-cols-2 gap-2.5 pt-1">
           {/* Income */}
-          <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
+          <div className="p-3.5 rounded-[20px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
             <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-500 mb-1">
               <TrendingUp className="w-4 h-4" />
               <span>Pemasukan</span>
@@ -217,7 +217,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
           </div>
 
           {/* Expense */}
-          <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
+          <div className="p-3.5 rounded-[20px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
             <div className="flex items-center gap-1.5 text-xs font-semibold text-rose-500 mb-1">
               <TrendingDown className="w-4 h-4" />
               <span>Pengeluaran</span>
@@ -228,7 +228,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
           </div>
 
           {/* Saving (Selisih) */}
-          <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
+          <div className="p-3.5 rounded-[20px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
             <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-500 mb-1">
               <PiggyBank className="w-4 h-4" />
               <span>Selisih</span>
@@ -245,7 +245,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
           </div>
 
           {/* Saving Rate */}
-          <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
+          <div className="p-3.5 rounded-[20px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
             <div className="flex items-center gap-1.5 text-xs font-semibold text-purple-500 mb-1">
               <Percent className="w-4 h-4" />
               <span>Saving Rate</span>
@@ -257,7 +257,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
         </div>
 
         {/* 6 Months Trend Bar Chart */}
-        <div className="p-4 rounded-[24px] bg-white dark:bg-[#161a22] border border-zinc-200/90 dark:border-zinc-800 shadow-xs dark:shadow-md dark:shadow-black/20 space-y-3">
+        <div className="p-4 rounded-[24px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-800 dark:text-zinc-200">
               <BarChart3 className="w-4 h-4 text-emerald-500" />

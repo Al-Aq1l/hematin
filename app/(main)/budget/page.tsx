@@ -211,7 +211,7 @@ export default function BudgetPage() {
 
       <div className="px-5 space-y-4 mt-2">
         {/* Month Selector Bar with Navigation */}
-        <div className="flex items-center justify-between p-2 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-800">
+        <div className="flex items-center justify-between p-2 rounded-2xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs">
           <button
             type="button"
             onClick={handlePrevMonth}
@@ -269,7 +269,7 @@ export default function BudgetPage() {
         ) : !data ? null : (
           <>
             {/* Total Budget Summary Card */}
-            <div className="p-4 rounded-3xl bg-zinc-900 text-white dark:bg-zinc-800 border border-zinc-800 dark:border-zinc-700 space-y-3 shadow-md">
+            <div className="p-4 rounded-3xl bg-zinc-900/85 text-white dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-800/80 dark:border-zinc-700/80 space-y-3 shadow-md">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-zinc-300">Total Anggaran</span>
                 <span
@@ -338,7 +338,7 @@ export default function BudgetPage() {
                   <div
                     key={item.categoryId}
                     onClick={() => openSetBudget(item)}
-                    className="p-3.5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-800/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/70 transition-all cursor-pointer shadow-xs space-y-2"
+                    className="p-3.5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md hover:bg-white/90 dark:hover:bg-[#1b202a]/80 transition-all cursor-pointer shadow-xs space-y-2"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
