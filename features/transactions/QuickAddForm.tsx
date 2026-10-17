@@ -6,6 +6,7 @@ import { formatRupiah, parseRupiahInput } from "@/lib/money";
 import { toWIBDateInputString } from "@/lib/date";
 import { createTransaction } from "./actions";
 import { useQuickAdd } from "@/components/QuickAddProvider";
+import { useBalanceVisibility } from "@/components/BalanceVisibilityProvider";
 import { Check, Plus, Loader2, AlertCircle } from "lucide-react";
 
 interface AccountOption {
@@ -42,6 +43,7 @@ export function QuickAddForm({
 }: QuickAddFormProps) {
   const router = useRouter();
   const { closeQuickAdd } = useQuickAdd();
+  const { isHidden, isReady } = useBalanceVisibility();
   const amountInputRef = useRef<HTMLInputElement>(null);
 
   const [type, setType] = useState<"EXPENSE" | "INCOME">("EXPENSE");
@@ -264,7 +266,7 @@ export function QuickAddForm({
           >
             {accounts.map((acc) => (
               <option key={acc.id} value={acc.id}>
-                {acc.name} ({formatRupiah(acc.balance)})
+                {acc.name} {isReady && isHidden ? "(••••••••)" : `(${formatRupiah(acc.balance)})`}
               </option>
             ))}
           </select>

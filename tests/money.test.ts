@@ -2,12 +2,22 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   formatRupiah,
+  formatMaskedRupiah,
+  MASKED_AMOUNT,
   parseRupiahInput,
   toBigIntAmount,
   fromBigIntToNumber,
   isValidTransactionAmount,
   MAX_TRANSACTION_AMOUNT,
 } from "../lib/money";
+
+test("formatMaskedRupiah - masks when isHidden is true, formats normally when false", () => {
+  assert.equal(formatMaskedRupiah(1_000_000, true), MASKED_AMOUNT);
+  assert.equal(formatMaskedRupiah(1_000_000, true, { maskedText: "••••••" }), "••••••");
+  assert.equal(formatMaskedRupiah(1_000_000, false), "Rp1.000.000");
+  assert.equal(formatMaskedRupiah(50_000, false, { prefix: false }), "50.000");
+});
+
 
 test("formatRupiah - formats positive, negative, and zero properly", () => {
   assert.equal(formatRupiah(1_000_000), "Rp1.000.000");

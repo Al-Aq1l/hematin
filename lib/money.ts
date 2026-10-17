@@ -38,11 +38,31 @@ export function formatRupiah(
   } else if (showSign && bigVal > BigInt(0)) {
     signPrefix = "+";
   }
-
   const currencyPrefix = prefix ? "Rp" : "";
 
   return `${signPrefix}${currencyPrefix}${formattedAbs}`;
 }
+
+export const MASKED_AMOUNT = "••••••••";
+
+/**
+ * Format an amount or return masked placeholder when hidden.
+ */
+export function formatMaskedRupiah(
+  amount: number | bigint,
+  isHidden: boolean,
+  options?: {
+    prefix?: boolean;
+    showSign?: boolean;
+    maskedText?: string;
+  }
+): string {
+  if (isHidden) {
+    return options?.maskedText ?? MASKED_AMOUNT;
+  }
+  return formatRupiah(amount, options);
+}
+
 
 /**
  * Clean user string input to raw numeric string or number.

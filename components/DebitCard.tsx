@@ -3,7 +3,9 @@
 import { useState, type CSSProperties } from "react";
 import { formatRupiah } from "@/lib/money";
 import { AccountWithBalance } from "@/lib/balances";
+import { useBalanceVisibility } from "@/components/BalanceVisibilityProvider";
 import HoloCard from "@/components/HoloCard";
+import { Eye, EyeOff } from "lucide-react";
 
 interface DebitCardProps {
   accounts: AccountWithBalance[];
@@ -14,6 +16,7 @@ interface DebitCardProps {
 const CARD_STYLE = { width: "100%", "--hc-ratio": 1.586 } as CSSProperties;
 
 export function DebitCard({ accounts, totalBalance }: DebitCardProps) {
+  const { isHidden, toggleHideBalance, isReady } = useBalanceVisibility();
   const cards = accounts.length > 0
     ? accounts.map((acc) => ({
       id: acc.id,
@@ -39,6 +42,9 @@ export function DebitCard({ accounts, totalBalance }: DebitCardProps) {
         preset="bursts"
         radius={28}
         shadow={false}
+        idle={false}
+        tiltMax={0}
+        hoverScale={1}
         style={CARD_STYLE}
         className="ring-1 ring-inset ring-white/15 shadow-2xl shadow-black/60"
       >
@@ -46,18 +52,45 @@ export function DebitCard({ accounts, totalBalance }: DebitCardProps) {
         <div className="absolute inset-0 p-6 flex flex-col text-white">
           {/* Shade supaya teks kebaca di atas foil yang terang */}
           <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/10 to-black/60 pointer-events-none" />
-          {/* Top Row: CARD BALANCE & More options */}
+          {/* Top Row: CARD BALANCE */}
           <div className="relative z-10 flex items-center">
             <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-zinc-300">
               CARD BALANCE
             </span>
           </div>
 
-          {/* Middle Row: Balance */}
-          <div className="relative z-10 mt-3">
-            <div className="text-[32px] sm:text-[34px] font-bold tracking-tight font-mono text-white leading-none drop-shadow-xs">
-              {formatRupiah(activeCard.balance)}
+          {/* Middle Row: Balance with Eye Toggle next to it */}
+          <div className="relative z-10 mt-3 flex items-center gap-2 min-h-[34px]">
+            <div
+              className="text-[32px] sm:text-[34px] font-bold tracking-tight font-mono text-white leading-none drop-shadow-xs flex items-center cursor-pointer select-none"
+              onClick={() => toggleHideBalance()}
+              title={isReady && isHidden ? "Ketuk untuk melihat saldo" : "Ketuk untuk menyembunyikan saldo"}
+            >
+              {isReady && isHidden ? (
+                <span className="tracking-[0.22em] text-[26px] sm:text-[28px] select-none text-zinc-200">
+                  ••••••••
+                </span>
+              ) : (
+                formatRupiah(activeCard.balance)
+              )}
             </div>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleHideBalance();
+              }}
+              className="w-7 h-7 rounded-full flex items-center justify-center text-zinc-300 hover:text-white hover:bg-white/15 active:scale-90 transition-all cursor-pointer backdrop-blur-xs shrink-0"
+              title={isReady && isHidden ? "Tampilkan Saldo" : "Sembunyikan Saldo"}
+              aria-label={isReady && isHidden ? "Tampilkan Saldo" : "Sembunyikan Saldo"}
+            >
+              {isReady && isHidden ? (
+                <EyeOff className="w-4 h-4 text-zinc-300 hover:text-white transition-colors" />
+              ) : (
+                <Eye className="w-4 h-4 text-zinc-300 hover:text-white transition-colors" />
+              )}
+            </button>
           </div>
 
           {/* Bottom Row: Account Title & Mastercard Logo */}

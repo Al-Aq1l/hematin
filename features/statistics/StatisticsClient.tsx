@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { formatRupiah } from "@/lib/money";
+import { categoryColor } from "@/lib/categoryColor";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { BarChart6Months } from "@/components/charts/BarChart6Months";
+import { useBalanceVisibility } from "@/components/BalanceVisibilityProvider";
 import { StatisticsData } from "./actions";
 import {
   ChevronLeft,
@@ -36,6 +38,7 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
 
   const [activeTab, setActiveTab] = useState<"EXPENSE" | "INCOME">("EXPENSE");
   const [timeFilter, setTimeFilter] = useState<"WEEK" | "MONTH" | "YEAR">("MONTH");
+  const { isHidden, isReady } = useBalanceVisibility();
 
   const activeBreakdown =
     activeTab === "EXPENSE" ? expenseBreakdown : incomeBreakdown;
@@ -177,23 +180,23 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
                 <Link
                   key={cat.id}
                   href={`/transactions?categoryId=${cat.id}&year=${year}&month=${month}`}
-                  className="p-3.5 rounded-[22px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-white/90 dark:hover:bg-[#1b202a]/80 flex flex-col justify-between transition-all group shadow-xs dark:shadow-md dark:shadow-black/20"
+                  className="p-3.5 rounded-[22px] bg-white/[0.03] hover:bg-white/[0.06] flex flex-col justify-between transition-colors group"
                 >
                   <div className="flex items-start justify-between gap-1">
-                    <div className="text-sm font-bold font-mono text-zinc-900 dark:text-white truncate">
+                    <div className="text-sm font-bold font-mono text-white truncate">
                       {formatRupiah(cat.amount)}
                     </div>
-                    <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 shrink-0">
+                    <span className="text-[11px] font-medium text-white/30 shrink-0">
                       {cat.percentage}%
                     </span>
                   </div>
 
                   <div className="flex items-center gap-2 mt-3">
                     <span
-                      className="w-2.5 h-2.5 rounded-full shrink-0 shadow-xs"
-                      style={{ backgroundColor: cat.color }}
+                      className="w-2 h-2 rounded-full shrink-0"
+                      style={{ backgroundColor: categoryColor(cat.color) }}
                     />
-                    <span className="text-xs font-medium text-zinc-300 truncate group-hover:text-white transition-colors">
+                    <span className="text-xs font-medium text-white/40 truncate group-hover:text-white/70 transition-colors uppercase tracking-wide">
                       {cat.name}
                     </span>
                   </div>
@@ -203,64 +206,58 @@ export function StatisticsClient({ data }: StatisticsClientProps) {
           )}
         </div>
 
-        {/* 4 Summary Cards with glassmorphism blend */}
+        {/* 4 Summary Cards */}
         <div className="grid grid-cols-2 gap-2.5 pt-1">
           {/* Income */}
-          <div className="p-3.5 rounded-[20px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-500 mb-1">
-              <TrendingUp className="w-4 h-4" />
+          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex flex-col justify-between">
+            <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400 mb-1.5">
+              <TrendingUp className="w-3.5 h-3.5 text-zinc-400" />
               <span>Pemasukan</span>
             </div>
-            <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100 truncate">
+            <div className="text-sm font-semibold font-mono text-zinc-100 tracking-tight truncate">
               {formatRupiah(summary.income)}
             </div>
           </div>
 
           {/* Expense */}
-          <div className="p-3.5 rounded-[20px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-rose-500 mb-1">
-              <TrendingDown className="w-4 h-4" />
+          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex flex-col justify-between">
+            <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400 mb-1.5">
+              <TrendingDown className="w-3.5 h-3.5 text-zinc-400" />
               <span>Pengeluaran</span>
             </div>
-            <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100 truncate">
+            <div className="text-sm font-semibold font-mono text-zinc-100 tracking-tight truncate">
               {formatRupiah(summary.expense)}
             </div>
           </div>
 
           {/* Saving (Selisih) */}
-          <div className="p-3.5 rounded-[20px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-500 mb-1">
-              <PiggyBank className="w-4 h-4" />
+          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex flex-col justify-between">
+            <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400 mb-1.5">
+              <PiggyBank className="w-3.5 h-3.5 text-zinc-400" />
               <span>Selisih</span>
             </div>
-            <div
-              className={`text-sm font-extrabold font-mono truncate ${
-                summary.saving < 0
-                  ? "text-rose-500"
-                  : "text-zinc-900 dark:text-zinc-100"
-              }`}
-            >
-              {formatRupiah(summary.saving)}
+            <div className="text-sm font-semibold font-mono text-zinc-100 tracking-tight truncate">
+              {isReady && isHidden ? "••••••••" : formatRupiah(summary.saving, { showSign: true })}
             </div>
           </div>
 
           {/* Saving Rate */}
-          <div className="p-3.5 rounded-[20px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 flex flex-col justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-purple-500 mb-1">
-              <Percent className="w-4 h-4" />
+          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex flex-col justify-between">
+            <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400 mb-1.5">
+              <Percent className="w-3.5 h-3.5 text-zinc-400" />
               <span>Saving Rate</span>
             </div>
-            <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100">
+            <div className="text-sm font-semibold font-mono text-zinc-100 tracking-tight">
               {summary.savingRate !== null ? `${summary.savingRate}%` : "—"}
             </div>
           </div>
         </div>
 
         {/* 6 Months Trend Bar Chart */}
-        <div className="p-4 rounded-[24px] bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs dark:shadow-md dark:shadow-black/20 space-y-3">
+        <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.05] space-y-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-zinc-800 dark:text-zinc-200">
-              <BarChart3 className="w-4 h-4 text-emerald-500" />
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-200">
+              <BarChart3 className="w-4 h-4 text-zinc-400" />
               <span>Tren 6 Bulan Terakhir</span>
             </div>
             <span className="text-[10px] text-zinc-400">Masuk vs Keluar</span>

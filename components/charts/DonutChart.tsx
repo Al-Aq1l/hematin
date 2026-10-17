@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { formatRupiah } from "@/lib/money";
+import { categoryColor } from "@/lib/categoryColor";
 
 export interface DonutChartItem {
   id: string;
@@ -24,25 +24,23 @@ export function DonutChart({
   emptyLabel = "Belum ada transaksi",
   centerSubtitle,
 }: DonutChartProps) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
   if (total <= 0 || items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center">
-        <div className="w-44 h-44 rounded-full border-4 border-dashed border-zinc-200 dark:border-zinc-800 flex items-center justify-center">
-          <span className="text-xs text-zinc-400 font-medium">{emptyLabel}</span>
+        <div className="w-[240px] h-[240px] rounded-full bg-white/[0.03] flex items-center justify-center">
+          <span className="text-xs text-zinc-500 font-medium">{emptyLabel}</span>
         </div>
       </div>
     );
   }
 
-  const size = 220;
-  const strokeWidth = 20;
+  const size = 240;
+  const strokeWidth = 26;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
-  // Segment gap in pixels
-  const gap = items.length > 1 ? 8 : 0;
+  // ponytail: gap fixed-length; upgrade when kategori bisa <5 (gap sudut konstan per-radian)
+  const gap = items.length > 1 ? strokeWidth * 0.9 : 0;
 
   // Calculate cumulative offsets
   const offsets: number[] = [];
@@ -54,90 +52,50 @@ export function DonutChart({
 
   const slices = items.map((item, index) => {
     const rawLen = (item.amount / total) * circumference;
-    const arcLen = Math.max(2, rawLen - gap);
+    // strokeLinecap round menambah strokeWidth/2 di tiap ujung; kurangi supaya panjang visual presisi
+    const arcLen = Math.max(0.5, rawLen - gap - strokeWidth);
     return {
       ...item,
       strokeDasharray: `${arcLen} ${circumference}`,
-      strokeDashoffset: offsets[index],
+      strokeDashoffset: offsets[index] - gap / 2 - strokeWidth / 2,
       index,
     };
   });
 
-  const activeItem = hoveredIndex !== null ? items[hoveredIndex] : null;
-
   return (
     <div className="flex flex-col items-center justify-center py-2 select-none">
-      <div className="relative w-[220px] h-[220px] flex items-center justify-center">
+      <div className="relative flex items-center justify-center">
         <svg
           width={size}
           height={size}
           viewBox={`0 0 ${size} ${size}`}
           className="transform -rotate-90"
         >
-          {/* Background circle track */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={strokeWidth}
-            className="text-zinc-200/50 dark:text-zinc-800/60"
-          />
-
           {/* Segmented Slices with rounded ends and gap */}
-          {slices.map((slice) => {
-            const isHovered = hoveredIndex === slice.index;
-            return (
-              <circle
-                key={slice.id}
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                fill="none"
-                stroke={slice.color}
-                strokeWidth={isHovered ? strokeWidth + 4 : strokeWidth}
-                strokeDasharray={slice.strokeDasharray}
-                strokeDashoffset={slice.strokeDashoffset}
-                strokeLinecap="round"
-                className="transition-all duration-300 cursor-pointer"
-                onMouseEnter={() => setHoveredIndex(slice.index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() =>
-                  setHoveredIndex((prev) => (prev === slice.index ? null : slice.index))
-                }
-              />
-            );
-          })}
+          {slices.map((slice) => (
+            <circle
+              key={slice.id}
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              fill="none"
+              stroke={categoryColor(slice.color)}
+              strokeWidth={strokeWidth}
+              strokeDasharray={slice.strokeDasharray}
+              strokeDashoffset={slice.strokeDashoffset}
+              strokeLinecap="round"
+            />
+          ))}
         </svg>
 
         {/* Center label */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center">
-          {activeItem ? (
-            <>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-400 truncate max-w-[130px]">
-                {activeItem.name}
-              </span>
-              <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-900 dark:text-white mt-0.5 tracking-tight">
-                {formatRupiah(activeItem.amount)}
-              </span>
-              <span className="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
-                {activeItem.percentage}%
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-400">
-                {centerSubtitle || "SPENT THIS MONTH"}
-              </span>
-              <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-900 dark:text-white mt-0.5 tracking-tight">
-                {formatRupiah(total)}
-              </span>
-              <span className="text-[10px] text-zinc-400 mt-0.5">
-                {items.length} Kategori
-              </span>
-            </>
-          )}
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
+          <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-zinc-500">
+            {centerSubtitle || "SPENT THIS MONTH"}
+          </span>
+          <span className="mt-1 text-2xl sm:text-[28px] font-semibold tracking-tight text-white leading-none">
+            {formatRupiah(total)}
+          </span>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { HideBalanceToggle } from "@/components/HideBalanceToggle";
 import { logoutAction } from "@/actions/auth";
 import {
   Wallet,
@@ -51,6 +52,17 @@ export default function SettingsPage() {
                 Sesi privat terlindungi cookie bertanda tangan HMAC
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Privacy & Display Preferences */}
+        <div className="space-y-2">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 px-1">
+            Privasi &amp; Tampilan
+          </h3>
+
+          <div className="rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md overflow-hidden shadow-2xs">
+            <HideBalanceToggle />
           </div>
         </div>
 

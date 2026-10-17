@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
+import { MaskedBalance } from "@/components/MaskedBalance";
 import { formatRupiah, parseRupiahInput } from "@/lib/money";
 import {
   getAccounts,
@@ -275,10 +276,10 @@ export default function AccountsPage() {
 
                   <div className="text-right">
                     <div className="text-sm font-extrabold font-mono text-zinc-900 dark:text-zinc-100">
-                      {formatRupiah(acc.balance)}
+                      <MaskedBalance amount={acc.balance} />
                     </div>
                     <div className="text-[10px] text-zinc-400">
-                      Awal: {formatRupiah(acc.initialBalance)}
+                      Awal: <MaskedBalance amount={acc.initialBalance} />
                     </div>
                   </div>
                 </div>

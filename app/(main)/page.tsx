@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { DebitCard } from "@/components/DebitCard";
+import { MaskedBalance } from "@/components/MaskedBalance";
+import { CashFlowCards } from "@/components/CashFlowCards";
 import { formatRupiah } from "@/lib/money";
 import { formatDateIndo } from "@/lib/date";
 import { getDashboardData } from "@/features/dashboard/actions";
 import {
-  TrendingUp,
-  TrendingDown,
-  PiggyBank,
   Plus,
   ChevronRight,
   Target,
@@ -25,13 +24,6 @@ const accountTypeLabels: Record<string, string> = {
 export default async function DashboardPage() {
   const data = await getDashboardData();
   const { totalBalance, accounts, summary, budget, recentTransactions } = data;
-
-  const budgetStatusColors = {
-    SAFE: "bg-zinc-200 text-zinc-300",
-    WARNING: "bg-zinc-400 text-zinc-300",
-    CRITICAL: "bg-zinc-500 text-zinc-300",
-    OVER_BUDGET: "bg-zinc-600 text-zinc-300",
-  }[budget.status];
 
   return (
     <div className="flex flex-col flex-1 pb-6">
@@ -60,48 +52,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* 3 Monthly Cash Flow Cards: Minimalist clean dark cards */}
-        <div className="grid grid-cols-3 gap-2">
-          {/* Masuk */}
-          <div className="p-3.5 rounded-2xl bg-[#161a22]/80 backdrop-blur-md border border-zinc-800/80 shadow-md shadow-black/25 flex flex-col justify-between">
-            <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400 mb-1.5">
-              <TrendingUp className="w-3.5 h-3.5 text-zinc-400" />
-              <span>Masuk</span>
-            </div>
-            <div className="text-xs sm:text-sm font-bold font-mono tracking-tight text-zinc-100 truncate">
-              {formatRupiah(summary.income)}
-            </div>
-          </div>
-
-          {/* Keluar */}
-          <div className="p-3.5 rounded-2xl bg-[#161a22]/80 backdrop-blur-md border border-zinc-800/80 shadow-md shadow-black/25 flex flex-col justify-between">
-            <div className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-400 mb-1.5">
-              <TrendingDown className="w-3.5 h-3.5 text-zinc-400" />
-              <span>Keluar</span>
-            </div>
-            <div className="text-xs sm:text-sm font-bold font-mono tracking-tight text-zinc-100 truncate">
-              {formatRupiah(summary.expense)}
-            </div>
-          </div>
-
-          {/* Selisih (Saving / Arus Kas Bersih) */}
-          <div className="p-3.5 rounded-2xl bg-[#161a22]/80 backdrop-blur-md border border-zinc-800/80 shadow-md shadow-black/25 flex flex-col justify-between">
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1 text-[11px] font-medium text-zinc-400">
-                <PiggyBank className="w-3.5 h-3.5 text-zinc-400" />
-                <span>Selisih</span>
-              </div>
-              <span className="text-[9px] px-1.5 py-0.5 rounded-md font-medium tracking-tight bg-zinc-800/80 text-zinc-300 border border-zinc-700/60">
-                {summary.saving < 0 ? "Defisit" : summary.saving > 0 ? "Surplus" : "0"}
-              </span>
-            </div>
-            <div
-              className="text-xs sm:text-sm font-bold font-mono tracking-tight text-zinc-100 truncate"
-              title="Selisih arus kas bulan ini"
-            >
-              {formatRupiah(summary.saving, { showSign: true })}
-            </div>
-          </div>
-        </div>
+        <CashFlowCards summary={summary} />
 
         {/* Section: Your accounts */}
         <div className="space-y-2.5 pt-1">
@@ -142,21 +93,19 @@ export default async function DashboardPage() {
                   <Link
                     key={acc.id}
                     href={`/transactions?accountId=${acc.id}`}
-                    className="p-3.5 rounded-2xl bg-white/70 dark:bg-[#161a22]/80 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-white/90 dark:hover:bg-[#1b202a]/80 flex items-center justify-between transition-all cursor-pointer group shadow-xs dark:shadow-md dark:shadow-black/25"
+                    className="p-3.5 rounded-2xl bg-white/70 dark:bg-white/[0.03] hover:bg-white dark:hover:bg-white/[0.06] flex items-center justify-between transition-colors cursor-pointer group"
                   >
                     <div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
+                      <div className="text-xs font-semibold uppercase tracking-wide text-zinc-900 dark:text-zinc-100">
                         {acc.name}
                       </div>
-                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                      <div className="text-[11px] text-zinc-500 mt-0.5">
                         {accountTypeLabels[acc.type] || "Akun"}
                       </div>
                     </div>
 
-                    <div className="text-right">
-                      <div className="text-sm font-bold font-mono text-zinc-900 dark:text-white">
-                        {formatRupiah(acc.balance)}
-                      </div>
+                    <div className="text-sm font-semibold font-mono text-zinc-900 dark:text-zinc-100">
+                      <MaskedBalance amount={acc.balance} />
                     </div>
                   </Link>
                 );
@@ -168,7 +117,7 @@ export default async function DashboardPage() {
         {/* Budget Bulan Ini Card: Crisp border and track */}
         <Link
           href="/budget"
-          className="block p-4 rounded-2xl bg-[#161a22]/80 backdrop-blur-md border border-zinc-800/80 hover:border-zinc-700 hover:bg-[#1b202a]/80 space-y-2.5 transition-all cursor-pointer shadow-md shadow-black/25"
+          className="block p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] space-y-2.5 transition-colors cursor-pointer"
         >
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1.5 font-semibold text-zinc-200">
@@ -181,7 +130,7 @@ export default async function DashboardPage() {
             </span>
           </div>
 
-          <div className="w-full bg-zinc-800/80 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-white/[0.06] h-1.5 rounded-full overflow-hidden">
             <div
               className="h-full transition-all duration-500 bg-zinc-300"
               style={{ width: `${Math.min(100, budget.percentage)}%` }}
@@ -216,8 +165,8 @@ export default async function DashboardPage() {
           </div>
 
           {recentTransactions.length === 0 ? (
-            <div className="p-8 rounded-3xl border border-dashed border-zinc-800/80 bg-[#161a22]/40 backdrop-blur-md text-center flex flex-col items-center justify-center space-y-2">
-              <div className="w-10 h-10 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center">
+            <div className="p-8 rounded-2xl bg-white/[0.03] text-center flex flex-col items-center justify-center space-y-2">
+              <div className="w-10 h-10 rounded-full bg-white/[0.06] text-zinc-500 flex items-center justify-center">
                 <PlusCircle className="w-5 h-5" />
               </div>
               <p className="text-xs text-zinc-400 font-medium">
@@ -228,17 +177,17 @@ export default async function DashboardPage() {
               </p>
             </div>
           ) : (
-            <div className="rounded-2xl border border-zinc-800/80 bg-[#161a22]/80 backdrop-blur-md divide-y divide-zinc-800/70 overflow-hidden shadow-md shadow-black/25">
+            <div className="rounded-2xl bg-white/[0.03] divide-y divide-white/[0.04] overflow-hidden">
               {recentTransactions.map((trx) => {
                 const isExpense = trx.type === "EXPENSE";
                 return (
                   <div
                     key={trx.id}
-                    className="p-3.5 flex items-center justify-between hover:bg-[#1b202a]/60 transition-colors"
+                    className="p-3.5 flex items-center justify-between hover:bg-white/[0.06] transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-sm shrink-0 shadow-xs bg-zinc-800/90 text-zinc-300 border border-zinc-700/40"
+                        className="w-9 h-9 rounded-xl flex items-center justify-center font-semibold text-xs shrink-0 bg-white/[0.06] text-zinc-400"
                       >
                         <span>{trx.categoryName.charAt(0).toUpperCase()}</span>
                       </div>
